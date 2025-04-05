@@ -81,9 +81,20 @@ def _(text):
     return text
 
 # Make translation function available in templates
+# Check and set locale before each request
+@app.before_request
+def before_request():
+    if 'locale' not in session:
+        session['locale'] = 'en'  # Default to English
+    
+    # If user is logged in, use their preferred locale
+    if current_user.is_authenticated and current_user.locale:
+        if current_user.locale != session.get('locale'):
+            session['locale'] = current_user.locale
+
 @app.context_processor
 def utility_processor():
-    return {'_': _}
+    return {'_': _, 'current_locale': session.get('locale', 'en')}
 
 # Routes for language switching
 @app.route('/set_language/<language>')

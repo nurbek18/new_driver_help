@@ -1,413 +1,408 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ _('admin_panel') }} - {{ _('driver_service_platform') }}</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-car-side me-2"></i>
-                {{ _('driver_service_platform') }}
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">{{ _('home') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('driver_form') }}">{{ _('driver_registration') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('user_view') }}">{{ _('find_drivers') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('logout') }}">{{ _('logout') }}</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+{% extends "base.html" %}
 
-    <!-- Language Selector -->
-    <div class="container mt-2">
-        <div class="d-flex justify-content-end">
-            <div class="dropdown">
-                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fas fa-globe me-1"></i> Language
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="languageDropdown">
-                    <li><a class="dropdown-item" href="{{ url_for('set_language', language='en', next=request.path) }}">English</a></li>
-                    <li><a class="dropdown-item" href="{{ url_for('set_language', language='ru', next=request.path) }}">Русский</a></li>
-                    <li><a class="dropdown-item" href="{{ url_for('set_language', language='kk', next=request.path) }}">Қазақша</a></li>
-                    <li><a class="dropdown-item" href="{{ url_for('set_language', language='zh', next=request.path) }}">中文</a></li>
-                </ul>
+{% block title %}{{ _('admin_panel') }} - {{ _('driver_service_platform') }}{% endblock %}
+
+{% block content %}
+<div class="mb-4 d-flex justify-content-between align-items-center">
+    <h2><i class="fas fa-user-shield me-2"></i>{{ _('admin_panel') }}</h2>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDriverModal">
+        <i class="fas fa-plus me-2"></i>{{ _('add_driver') }}
+    </button>
+</div>
+
+<!-- Drivers Table -->
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>{{ _('driver_code') }}</th>
+                        <th>{{ _('full_name') }}</th>
+                        <th>{{ _('age') }}</th>
+                        <th>{{ _('gender') }}</th>
+                        <th>{{ _('phone_number') }}</th>
+                        <th>{{ _('whatsapp_number') }}</th>
+                        <th>{{ _('availability') }}</th>
+                        <th>{{ _('actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for driver in drivers %}
+                    <tr>
+                        <td>{{ driver.driver_code }}</td>
+                        <td>{{ driver.name }}</td>
+                        <td>{{ driver.age }}</td>
+                        <td>{{ driver.gender }}</td>
+                        <td>{{ driver.phone }}</td>
+                        <td>{{ driver.whatsapp }}</td>
+                        <td>
+                            {% if driver.available %}
+                            <span class="badge bg-success">{{ _('available') }}</span>
+                            {% else %}
+                            <span class="badge bg-secondary">{{ _('unavailable') }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary edit-driver" data-driver-id="{{ driver.id }}"
+                                data-driver-name="{{ driver.name }}"
+                                data-driver-age="{{ driver.age }}"
+                                data-driver-gender="{{ driver.gender }}"
+                                data-driver-phone="{{ driver.phone }}"
+                                data-driver-whatsapp="{{ driver.whatsapp }}"
+                                data-driver-available="{{ driver.available | lower }}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-driver" data-driver-id="{{ driver.id }}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Add Driver Modal -->
+<div class="modal fade" id="addDriverModal" tabindex="-1" aria-labelledby="addDriverModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDriverModalLabel">{{ _('add_driver') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addDriverForm" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="add-name" class="form-label">{{ _('full_name') }} <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="add-name" name="name" required>
+                        <div class="invalid-feedback">
+                            {{ _('provide_full_name') }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="add-age" class="form-label">{{ _('age') }} <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="add-age" name="age" min="18" max="80" required>
+                        <div class="invalid-feedback">
+                            {{ _('provide_valid_age') }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="add-gender" class="form-label">{{ _('gender') }} <span class="text-danger">*</span></label>
+                        <select class="form-select" id="add-gender" name="gender" required>
+                            <option value="" selected disabled>{{ _('select_gender') }}</option>
+                            <option value="Male">{{ _('male') }}</option>
+                            <option value="Female">{{ _('female') }}</option>
+                            <option value="Other">{{ _('other') }}</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            {{ _('select_your_gender') }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="add-phone" class="form-label">{{ _('phone_number') }} <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control" id="add-phone" name="phone" required>
+                        <div class="form-text">{{ _('include_country_code') }}</div>
+                        <div class="invalid-feedback">
+                            {{ _('provide_phone') }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="add-whatsapp" class="form-label">{{ _('whatsapp_number') }} <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control" id="add-whatsapp" name="whatsapp" required>
+                        <div class="form-text">{{ _('include_country_code') }}</div>
+                        <div class="invalid-feedback">
+                            {{ _('provide_whatsapp') }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="add-available" name="available" checked>
+                        <label class="form-check-label" for="add-available">{{ _('currently_available') }}</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('cancel') }}</button>
+                <button type="button" class="btn btn-primary" id="saveAddDriverBtn">{{ _('save') }}</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Main Content -->
-    <div class="container main-container">
-        <h1 class="mb-4">{{ _('admin_panel') }}</h1>
-        
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <div class="alert alert-info">
-            {% for message in messages %}
-            {{ message }}
-            {% endfor %}
-        </div>
-        {% endif %}
-        {% endwith %}
-        
-        <!-- Driver Management Section -->
-        <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h2>{{ _('available_drivers') }}</h2>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDriverModal">
-                    <i class="fas fa-plus me-1"></i> {{ _('add_driver') }}
-                </button>
+<!-- Edit Driver Modal -->
+<div class="modal fade" id="editDriverModal" tabindex="-1" aria-labelledby="editDriverModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editDriverModalLabel">{{ _('edit_driver') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>{{ _('driver_code') }}</th>
-                                <th>{{ _('full_name') }}</th>
-                                <th>{{ _('age') }}</th>
-                                <th>{{ _('gender') }}</th>
-                                <th>{{ _('phone_number') }}</th>
-                                <th>{{ _('whatsapp_number') }}</th>
-                                <th>{{ _('availability') }}</th>
-                                <th>{{ _('actions') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for driver in drivers %}
-                            <tr>
-                                <td>{{ driver.driver_code }}</td>
-                                <td>{{ driver.name }}</td>
-                                <td>{{ driver.age }}</td>
-                                <td>{{ driver.gender }}</td>
-                                <td>{{ driver.phone }}</td>
-                                <td>{{ driver.whatsapp }}</td>
-                                <td>
-                                    {% if driver.available %}
-                                    <span class="badge bg-success">{{ _('available') }}</span>
-                                    {% else %}
-                                    <span class="badge bg-danger">{{ _('unavailable') }}</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary edit-driver" data-id="{{ driver.id }}" data-bs-toggle="modal" data-bs-target="#editDriverModal">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger delete-driver" data-id="{{ driver.id }}" data-bs-toggle="modal" data-bs-target="#deleteDriverModal">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+            <div class="modal-body">
+                <form id="editDriverForm" class="needs-validation" novalidate>
+                    <input type="hidden" id="edit-driver-id">
+                    
+                    <div class="mb-3">
+                        <label for="edit-name" class="form-label">{{ _('full_name') }} <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="edit-name" name="name" required>
+                        <div class="invalid-feedback">
+                            {{ _('provide_full_name') }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit-age" class="form-label">{{ _('age') }} <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="edit-age" name="age" min="18" max="80" required>
+                        <div class="invalid-feedback">
+                            {{ _('provide_valid_age') }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit-gender" class="form-label">{{ _('gender') }} <span class="text-danger">*</span></label>
+                        <select class="form-select" id="edit-gender" name="gender" required>
+                            <option value="" disabled>{{ _('select_gender') }}</option>
+                            <option value="Male">{{ _('male') }}</option>
+                            <option value="Female">{{ _('female') }}</option>
+                            <option value="Other">{{ _('other') }}</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            {{ _('select_your_gender') }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit-phone" class="form-label">{{ _('phone_number') }} <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control" id="edit-phone" name="phone" required>
+                        <div class="form-text">{{ _('include_country_code') }}</div>
+                        <div class="invalid-feedback">
+                            {{ _('provide_phone') }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edit-whatsapp" class="form-label">{{ _('whatsapp_number') }} <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control" id="edit-whatsapp" name="whatsapp" required>
+                        <div class="form-text">{{ _('include_country_code') }}</div>
+                        <div class="invalid-feedback">
+                            {{ _('provide_whatsapp') }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="edit-available" name="available">
+                        <label class="form-check-label" for="edit-available">{{ _('currently_available') }}</label>
+                    </div>
+                </form>
             </div>
-        </div>
-    </div>
-
-    <!-- Add Driver Modal -->
-    <div class="modal fade" id="addDriverModal" tabindex="-1" aria-labelledby="addDriverModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addDriverModalLabel">{{ _('add_driver') }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addDriverForm">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">{{ _('full_name') }}</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="age" class="form-label">{{ _('age') }}</label>
-                            <input type="number" class="form-control" id="age" name="age" min="18" max="80" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="gender" class="form-label">{{ _('gender') }}</label>
-                            <select class="form-select" id="gender" name="gender" required>
-                                <option value="" selected disabled>{{ _('select_gender') }}</option>
-                                <option value="Male">{{ _('male') }}</option>
-                                <option value="Female">{{ _('female') }}</option>
-                                <option value="Other">{{ _('other') }}</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">{{ _('phone_number') }}</label>
-                            <input type="tel" class="form-control" id="phone" name="phone" required>
-                            <div class="form-text">{{ _('include_country_code') }}</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="whatsapp" class="form-label">{{ _('whatsapp_number') }}</label>
-                            <input type="tel" class="form-control" id="whatsapp" name="whatsapp" required>
-                            <div class="form-text">{{ _('include_country_code') }}</div>
-                        </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="available" name="available" checked>
-                            <label class="form-check-label" for="available">{{ _('currently_available') }}</label>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('cancel') }}</button>
-                    <button type="button" class="btn btn-primary" id="saveAddDriver">{{ _('save') }}</button>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('cancel') }}</button>
+                <button type="button" class="btn btn-primary" id="saveEditDriverBtn">{{ _('save') }}</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Edit Driver Modal -->
-    <div class="modal fade" id="editDriverModal" tabindex="-1" aria-labelledby="editDriverModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editDriverModalLabel">{{ _('edit_driver') }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editDriverForm">
-                        <input type="hidden" id="edit_id">
-                        <div class="mb-3">
-                            <label for="edit_name" class="form-label">{{ _('full_name') }}</label>
-                            <input type="text" class="form-control" id="edit_name" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_age" class="form-label">{{ _('age') }}</label>
-                            <input type="number" class="form-control" id="edit_age" name="age" min="18" max="80" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_gender" class="form-label">{{ _('gender') }}</label>
-                            <select class="form-select" id="edit_gender" name="gender" required>
-                                <option value="Male">{{ _('male') }}</option>
-                                <option value="Female">{{ _('female') }}</option>
-                                <option value="Other">{{ _('other') }}</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_phone" class="form-label">{{ _('phone_number') }}</label>
-                            <input type="tel" class="form-control" id="edit_phone" name="phone" required>
-                            <div class="form-text">{{ _('include_country_code') }}</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_whatsapp" class="form-label">{{ _('whatsapp_number') }}</label>
-                            <input type="tel" class="form-control" id="edit_whatsapp" name="whatsapp" required>
-                            <div class="form-text">{{ _('include_country_code') }}</div>
-                        </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="edit_available" name="available">
-                            <label class="form-check-label" for="edit_available">{{ _('currently_available') }}</label>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('cancel') }}</button>
-                    <button type="button" class="btn btn-primary" id="saveEditDriver">{{ _('save') }}</button>
-                </div>
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteDriverModal" tabindex="-1" aria-labelledby="deleteDriverModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteDriverModalLabel">{{ _('delete_driver') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>{{ _('confirm_delete') }}</p>
+                <input type="hidden" id="delete-driver-id">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('cancel') }}</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">{{ _('delete_driver') }}</button>
             </div>
         </div>
     </div>
+</div>
+{% endblock %}
 
-    <!-- Delete Driver Modal -->
-    <div class="modal fade" id="deleteDriverModal" tabindex="-1" aria-labelledby="deleteDriverModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteDriverModalLabel">{{ _('delete_driver') }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>{{ _('confirm_delete') }}</p>
-                    <input type="hidden" id="delete_id">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('cancel') }}</button>
-                    <button type="button" class="btn btn-danger" id="confirmDelete">{{ _('delete_driver') }}</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-dark text-light py-3 mt-5">
-        <div class="container text-center">
-            <p class="mb-0">{{ _('footer_copyright') }}</p>
-        </div>
-    </footer>
-
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    
-    <script>
-        // Translations for JavaScript alerts
-        const translations = {
-            driver_added: "{{ _('driver_added') }}",
-            driver_updated: "{{ _('driver_updated') }}",
-            driver_deleted: "{{ _('driver_deleted') }}",
-            fill_required: "{{ _('provide_full_name') }}",
-            error_occurred: "{{ _('error_occurred') }}"
-        };
-        
-        // Admin panel JavaScript for driver management
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add driver
-            document.getElementById('saveAddDriver').addEventListener('click', function() {
-                const name = document.getElementById('name').value;
-                const age = parseInt(document.getElementById('age').value);
-                const gender = document.getElementById('gender').value;
-                const phone = document.getElementById('phone').value;
-                const whatsapp = document.getElementById('whatsapp').value;
-                const available = document.getElementById('available').checked;
-                
-                if (!name || !age || !gender || !phone || !whatsapp) {
-                    alert('Please fill in all required fields');
-                    return;
-                }
+{% block extrajs %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Setup add driver form
+        document.getElementById('saveAddDriverBtn').addEventListener('click', function() {
+            const form = document.getElementById('addDriverForm');
+            if (form.checkValidity()) {
+                const data = {
+                    name: document.getElementById('add-name').value,
+                    age: parseInt(document.getElementById('add-age').value),
+                    gender: document.getElementById('add-gender').value,
+                    phone: document.getElementById('add-phone').value,
+                    whatsapp: document.getElementById('add-whatsapp').value,
+                    available: document.getElementById('add-available').checked
+                };
                 
                 fetch('/api/drivers', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        name: name,
-                        age: age,
-                        gender: gender,
-                        phone: phone,
-                        whatsapp: whatsapp,
-                        available: available
-                    }),
+                    body: JSON.stringify(data)
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.message) {
-                        alert('{{ _('driver_added') }}');
-                        location.reload();
-                    } else {
-                        alert('Error: ' + data.error);
+                        showAlert('success', data.message);
+                        // Reload page to see the new driver
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+                    } else if (data.error) {
+                        showAlert('danger', data.error);
                     }
+                    
+                    // Close the modal
+                    var modal = bootstrap.Modal.getInstance(document.getElementById('addDriverModal'));
+                    modal.hide();
                 })
                 .catch(error => {
+                    showAlert('danger', 'An error occurred while adding the driver.');
                     console.error('Error:', error);
-                    alert('An error occurred while adding the driver');
                 });
-            });
-            
-            // Edit driver - populate modal with driver data
-            document.querySelectorAll('.edit-driver').forEach(button => {
-                button.addEventListener('click', function() {
-                    const driverId = this.getAttribute('data-id');
-                    const row = this.closest('tr');
-                    
-                    document.getElementById('edit_id').value = driverId;
-                    document.getElementById('edit_name').value = row.cells[1].textContent;
-                    document.getElementById('edit_age').value = row.cells[2].textContent;
-                    document.getElementById('edit_gender').value = row.cells[3].textContent;
-                    document.getElementById('edit_phone').value = row.cells[4].textContent;
-                    document.getElementById('edit_whatsapp').value = row.cells[5].textContent;
-                    document.getElementById('edit_available').checked = row.cells[6].querySelector('.badge').classList.contains('bg-success');
-                });
-            });
-            
-            // Save edited driver
-            document.getElementById('saveEditDriver').addEventListener('click', function() {
-                const id = document.getElementById('edit_id').value;
-                const name = document.getElementById('edit_name').value;
-                const age = parseInt(document.getElementById('edit_age').value);
-                const gender = document.getElementById('edit_gender').value;
-                const phone = document.getElementById('edit_phone').value;
-                const whatsapp = document.getElementById('edit_whatsapp').value;
-                const available = document.getElementById('edit_available').checked;
+            } else {
+                form.classList.add('was-validated');
+            }
+        });
+        
+        // Setup edit driver buttons
+        document.querySelectorAll('.edit-driver').forEach(button => {
+            button.addEventListener('click', function() {
+                const driverId = this.getAttribute('data-driver-id');
+                document.getElementById('edit-driver-id').value = driverId;
+                document.getElementById('edit-name').value = this.getAttribute('data-driver-name');
+                document.getElementById('edit-age').value = this.getAttribute('data-driver-age');
+                document.getElementById('edit-gender').value = this.getAttribute('data-driver-gender');
+                document.getElementById('edit-phone').value = this.getAttribute('data-driver-phone');
+                document.getElementById('edit-whatsapp').value = this.getAttribute('data-driver-whatsapp');
+                document.getElementById('edit-available').checked = this.getAttribute('data-driver-available') === 'true';
                 
-                if (!name || !age || !gender || !phone || !whatsapp) {
-                    alert('Please fill in all required fields');
-                    return;
-                }
+                // Show the edit modal
+                new bootstrap.Modal(document.getElementById('editDriverModal')).show();
+            });
+        });
+        
+        // Setup save edit driver button
+        document.getElementById('saveEditDriverBtn').addEventListener('click', function() {
+            const form = document.getElementById('editDriverForm');
+            if (form.checkValidity()) {
+                const driverId = document.getElementById('edit-driver-id').value;
+                const data = {
+                    name: document.getElementById('edit-name').value,
+                    age: parseInt(document.getElementById('edit-age').value),
+                    gender: document.getElementById('edit-gender').value,
+                    phone: document.getElementById('edit-phone').value,
+                    whatsapp: document.getElementById('edit-whatsapp').value,
+                    available: document.getElementById('edit-available').checked
+                };
                 
-                fetch(`/api/drivers/${id}`, {
+                fetch(`/api/drivers/${driverId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        name: name,
-                        age: age,
-                        gender: gender,
-                        phone: phone,
-                        whatsapp: whatsapp,
-                        available: available
-                    }),
+                    body: JSON.stringify(data)
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.message) {
-                        alert('Driver updated successfully');
-                        location.reload();
-                    } else {
-                        alert('Error: ' + data.error);
+                        showAlert('success', data.message);
+                        // Reload page to see the updated driver
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+                    } else if (data.error) {
+                        showAlert('danger', data.error);
                     }
+                    
+                    // Close the modal
+                    var modal = bootstrap.Modal.getInstance(document.getElementById('editDriverModal'));
+                    modal.hide();
                 })
                 .catch(error => {
+                    showAlert('danger', 'An error occurred while updating the driver.');
                     console.error('Error:', error);
-                    alert('An error occurred while updating the driver');
                 });
-            });
-            
-            // Delete driver - set driver ID
-            document.querySelectorAll('.delete-driver').forEach(button => {
-                button.addEventListener('click', function() {
-                    const driverId = this.getAttribute('data-id');
-                    document.getElementById('delete_id').value = driverId;
-                });
-            });
-            
-            // Confirm driver deletion
-            document.getElementById('confirmDelete').addEventListener('click', function() {
-                const id = document.getElementById('delete_id').value;
+            } else {
+                form.classList.add('was-validated');
+            }
+        });
+        
+        // Setup delete driver buttons
+        document.querySelectorAll('.delete-driver').forEach(button => {
+            button.addEventListener('click', function() {
+                const driverId = this.getAttribute('data-driver-id');
+                document.getElementById('delete-driver-id').value = driverId;
                 
-                fetch(`/api/drivers/${id}`, {
-                    method: 'DELETE',
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message) {
-                        alert('Driver deleted successfully');
-                        location.reload();
-                    } else {
-                        alert('Error: ' + data.error);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while deleting the driver');
-                });
+                // Show the delete confirmation modal
+                new bootstrap.Modal(document.getElementById('deleteDriverModal')).show();
             });
         });
-    </script>
-</body>
-</html>
+        
+        // Setup confirm delete button
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            const driverId = document.getElementById('delete-driver-id').value;
+            
+            fetch(`/api/drivers/${driverId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    showAlert('success', data.message);
+                    // Reload page to update the driver list
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } else if (data.error) {
+                    showAlert('danger', data.error);
+                }
+                
+                // Close the modal
+                var modal = bootstrap.Modal.getInstance(document.getElementById('deleteDriverModal'));
+                modal.hide();
+            })
+            .catch(error => {
+                showAlert('danger', 'An error occurred while deleting the driver.');
+                console.error('Error:', error);
+            });
+        });
+    });
+    
+    // Show alert function
+    function showAlert(type, message) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+        alertDiv.role = 'alert';
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        
+        // Insert at the top of the content
+        const content = document.querySelector('.main-container');
+        content.insertBefore(alertDiv, content.firstChild);
+        
+        // Auto dismiss after 5 seconds
+        setTimeout(() => {
+            alertDiv.classList.remove('show');
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 150);
+        }, 5000);
+    }
+</script>
+{% endblock %}

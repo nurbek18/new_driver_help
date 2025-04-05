@@ -1,5 +1,4 @@
-from app import app, db
-from models import Driver
+from app import app, db, Driver, generate_driver_code
 
 # List of fictional driver data
 sample_drivers = [
@@ -96,6 +95,8 @@ def add_sample_drivers():
     # Add sample data
     try:
         for driver_data in sample_drivers:
+            # Add a unique driver code for each driver
+            driver_data['driver_code'] = generate_driver_code()
             driver = Driver(**driver_data)
             db.session.add(driver)
         

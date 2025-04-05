@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ _('driver_service_platform') }}</title>
+    <title>{{ _('login') }} - {{ _('driver_service_platform') }}</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
@@ -26,7 +26,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/">{{ _('home') }}</a>
+                        <a class="nav-link" href="/">{{ _('home') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('driver_form') }}">{{ _('driver_registration') }}</a>
@@ -34,25 +34,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('user_view') }}">{{ _('find_drivers') }}</a>
                     </li>
-                    {% if session.get('is_admin') %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('admin_dashboard') }}">{{ _('admin_panel') }}</a>
-                    </li>
-                    {% endif %}
-                    {% if session.get('user_id') %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('logout') }}">{{ _('logout') }}</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('login') }}">{{ _('login') }}</a>
-                    </li>
-                    {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
-    
+
     <!-- Language Selector -->
     <div class="container mt-2">
         <div class="d-flex justify-content-end">
@@ -72,48 +58,40 @@
 
     <!-- Main Content -->
     <div class="container main-container">
-        <div class="jumbotron text-center">
-            <h1 class="display-4">Welcome to Driver Service Platform</h1>
-            <p class="lead">A convenient way to connect drivers and passengers</p>
-            <hr class="my-4">
-            <p>Choose your role to get started:</p>
-            
-            <div class="d-flex justify-content-center flex-wrap mt-4">
-                <a href="{{ url_for('driver_form') }}" class="btn btn-primary role-btn">
-                    <i class="fas fa-id-card me-2"></i> I'm a Driver
-                </a>
-                <a href="{{ url_for('user_view') }}" class="btn btn-secondary role-btn">
-                    <i class="fas fa-user me-2"></i> I'm a User
-                </a>
-            </div>
-        </div>
-        
-        <!-- Features Section -->
-        <div class="row mt-5">
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body text-center">
-                        <i class="fas fa-car-side fa-3x mb-3 text-primary"></i>
-                        <h3 class="card-title">For Drivers</h3>
-                        <p class="card-text">Register your information and let users know when you're available for driving services.</p>
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="text-center">{{ _('login') }}</h2>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body text-center">
-                        <i class="fas fa-search fa-3x mb-3 text-primary"></i>
-                        <h3 class="card-title">For Users</h3>
-                        <p class="card-text">Browse available drivers, filter by criteria, and connect via WhatsApp.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body text-center">
-                        <i class="fas fa-shield-alt fa-3x mb-3 text-primary"></i>
-                        <h3 class="card-title">Safe & Convenient</h3>
-                        <p class="card-text">Easy-to-use platform that connects drivers and passengers safely.</p>
+                    <div class="card-body">
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                        <div class="alert alert-danger">
+                            {% for message in messages %}
+                            {{ message }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+
+                        <form method="POST" action="{{ url_for('login') }}">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">{{ _('username') }}</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">{{ _('password') }}</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
+                                <label class="form-check-label" for="remember_me">Remember Me</label>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">{{ _('login') }}</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -121,9 +99,9 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-dark text-light">
+    <footer class="bg-dark text-light py-3 mt-5">
         <div class="container text-center">
-            <p class="mb-0">&copy; 2023 Driver Service Platform. All rights reserved.</p>
+            <p class="mb-0">{{ _('footer_copyright') }}</p>
         </div>
     </footer>
 

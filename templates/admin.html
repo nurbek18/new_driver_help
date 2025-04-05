@@ -16,16 +16,6 @@
             <i class="fas fa-plus me-2"></i>{{ _('add_driver') }}
         </button>
     </div>
-        <a href="{{ url_for('admin_profile') }}" class="btn btn-outline-secondary me-2">
-            <i class="fas fa-user-cog me-2"></i>{{ _('profile_settings') }}
-        </a>
-        <a href="{{ url_for('admin_settings') }}" class="btn btn-outline-secondary me-2">
-            <i class="fas fa-cogs me-2"></i>{{ _('admin_settings') }}
-        </a>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDriverModal">
-            <i class="fas fa-plus me-2"></i>{{ _('add_driver') }}
-        </button>
-    </div>
 </div>
 
 <!-- Search Bar -->
@@ -364,7 +354,7 @@
                 const driverId = this.getAttribute('data-driver-id');
                 document.getElementById('delete-driver-id').value = driverId;
                 
-                // Show the delete modal
+                // Show the delete confirmation modal
                 new bootstrap.Modal(document.getElementById('deleteDriverModal')).show();
             });
         });
@@ -398,109 +388,109 @@
             });
         });
         
-        // Setup admin search functionality
+        // Search functionality
         document.getElementById('search-btn').addEventListener('click', function() {
             const searchQuery = document.getElementById('admin-search-input').value.trim();
-            if (searchQuery) {
-                fetch(`/api/drivers?search=${encodeURIComponent(searchQuery)}`)
+            filterDriversBySearch(searchQuery);
+        });
+        
+        // Reset search functionality
+        document.getElementById('reset-search-btn').addEventListener('click', function() {
+            document.getElementById('admin-search-input').value = '';
+            filterDriversBySearch('');
+        });
+        
+        function filterDriversBySearch(query) {
+            fetch(`/api/drivers?search=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(drivers => {
-                    updateDriversTable(drivers);
+                    const tableBody = document.getElementById('drivers-table-body');
+                    tableBody.innerHTML = '';
+                    
+                    if (drivers.length === 0) {
+                        // No drivers found
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td colspan="7" class="text-center py-4">{{ _('no_drivers_found') }}</td>`;
+                        tableBody.appendChild(row);
+                    } else {
+                        // Populate table with drivers
+                        drivers.forEach(driver => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${driver.driver_code}</td>
+                                <td>${driver.name}</td>
+                                <td>${driver.age}</td>
+                                <td>${driver.gender}</td>
+                                <td>${driver.phone}</td>
+                                <td>${driver.whatsapp}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary edit-driver" 
+                                        data-driver-id="${driver.id}"
+                                        data-driver-name="${driver.name}"
+                                        data-driver-age="${driver.age}"
+                                        data-driver-gender="${driver.gender}"
+                                        data-driver-phone="${driver.phone}"
+                                        data-driver-whatsapp="${driver.whatsapp}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger delete-driver" data-driver-id="${driver.id}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            `;
+                            tableBody.appendChild(row);
+                        });
+                        
+                        // Reattach event listeners
+                        document.querySelectorAll('.edit-driver').forEach(button => {
+                            button.addEventListener('click', function() {
+                                const driverId = this.getAttribute('data-driver-id');
+                                document.getElementById('edit-driver-id').value = driverId;
+                                document.getElementById('edit-name').value = this.getAttribute('data-driver-name');
+                                document.getElementById('edit-age').value = this.getAttribute('data-driver-age');
+                                document.getElementById('edit-gender').value = this.getAttribute('data-driver-gender');
+                                document.getElementById('edit-phone').value = this.getAttribute('data-driver-phone');
+                                document.getElementById('edit-whatsapp').value = this.getAttribute('data-driver-whatsapp');
+                                
+                                new bootstrap.Modal(document.getElementById('editDriverModal')).show();
+                            });
+                        });
+                        
+                        document.querySelectorAll('.delete-driver').forEach(button => {
+                            button.addEventListener('click', function() {
+                                const driverId = this.getAttribute('data-driver-id');
+                                document.getElementById('delete-driver-id').value = driverId;
+                                
+                                new bootstrap.Modal(document.getElementById('deleteDriverModal')).show();
+                            });
+                        });
+                    }
                 })
                 .catch(error => {
                     console.error('Error searching drivers:', error);
                     showAlert('danger', 'An error occurred while searching drivers.');
                 });
-            }
-        });
-        
-        // Reset search button
-        document.getElementById('reset-search-btn').addEventListener('click', function() {
-            document.getElementById('admin-search-input').value = '';
-            fetch('/api/drivers')
-            .then(response => response.json())
-            .then(drivers => {
-                updateDriversTable(drivers);
-            })
-            .catch(error => {
-                console.error('Error resetting search:', error);
-                showAlert('danger', 'An error occurred while resetting the search.');
-            });
-        });
-        
-        // Function to update drivers table
-        function updateDriversTable(drivers) {
-            const tableBody = document.getElementById('drivers-table-body');
-            tableBody.innerHTML = '';
-            
-            if (drivers.length === 0) {
-                const row = document.createElement('tr');
-                row.innerHTML = `<td colspan="7" class="text-center">{{ _('no_drivers_found') }}</td>`;
-                tableBody.appendChild(row);
-                return;
-            }
-            
-            drivers.forEach(driver => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${driver.driver_code}</td>
-                    <td>${driver.name}</td>
-                    <td>${driver.age}</td>
-                    <td>${driver.gender}</td>
-                    <td>${driver.phone}</td>
-                    <td>${driver.whatsapp}</td>
-                    <td>
-                        <button class="btn btn-sm btn-primary edit-driver" 
-                            data-driver-id="${driver.id}"
-                            data-driver-name="${driver.name}"
-                            data-driver-age="${driver.age}"
-                            data-driver-gender="${driver.gender}"
-                            data-driver-phone="${driver.phone}"
-                            data-driver-whatsapp="${driver.whatsapp}">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-driver" data-driver-id="${driver.id}">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-            
-            // Reattach event listeners to new buttons
-            document.querySelectorAll('.edit-driver').forEach(button => {
-                button.addEventListener('click', function() {
-                    const driverId = this.getAttribute('data-driver-id');
-                    document.getElementById('edit-driver-id').value = driverId;
-                    document.getElementById('edit-name').value = this.getAttribute('data-driver-name');
-                    document.getElementById('edit-age').value = this.getAttribute('data-driver-age');
-                    document.getElementById('edit-gender').value = this.getAttribute('data-driver-gender');
-                    document.getElementById('edit-phone').value = this.getAttribute('data-driver-phone');
-                    document.getElementById('edit-whatsapp').value = this.getAttribute('data-driver-whatsapp');
-                    
-                    // Show the edit modal
-                    new bootstrap.Modal(document.getElementById('editDriverModal')).show();
-                });
-            });
-            
-            document.querySelectorAll('.delete-driver').forEach(button => {
-                button.addEventListener('click', function() {
-                    const driverId = this.getAttribute('data-driver-id');
-                    document.getElementById('delete-driver-id').value = driverId;
-                    
-                    // Show the delete modal
-                    new bootstrap.Modal(document.getElementById('deleteDriverModal')).show();
-                });
-            });
         }
         
-        // Allow searching on Enter key press
-        document.getElementById('admin-search-input').addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                document.getElementById('search-btn').click();
-            }
-        });
+        // Alert function
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;
+            alertDiv.style.zIndex = 1050;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            
+            // Auto dismiss after 3 seconds
+            setTimeout(() => {
+                if (alertDiv) {
+                    alertDiv.classList.remove('show');
+                    setTimeout(() => alertDiv.remove(), 150);
+                }
+            }, 3000);
+        }
     });
 </script>
 {% endblock %}

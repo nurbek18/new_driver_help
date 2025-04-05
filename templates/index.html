@@ -57,11 +57,26 @@
             <div class="card-body">
                 <h3 class="card-title">{{ _('need_help') }}</h3>
                 <p class="card-text">{{ _('contact_support_desc') }}</p>
-                <a href="https://wa.me/+77082836678" target="_blank" class="btn btn-success">
+                <a href="https://wa.me/{{ support_whatsapp }}" target="_blank" class="btn btn-success">
                     <i class="fab fa-whatsapp me-2"></i> {{ _('contact_via_whatsapp') }}
                 </a>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block footer %}
+<footer class="footer py-3 bg-dark text-light mt-5">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-12">
+                <p class="mb-1">{{ _('footer_copyright') }}</p>
+                <p class="small mb-0">
+                    <a href="{{ url_for('login') }}" class="text-muted footer-admin-link">{{ _('admin_login_message') }}</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
 {% endblock %}

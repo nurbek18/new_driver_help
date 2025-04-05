@@ -44,10 +44,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('logout') }}">{{ _('logout') }}</a>
                     </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/login' %}active{% endif %}" href="{{ url_for('login') }}">{{ _('login') }}</a>
-                    </li>
                     {% endif %}
                 </ul>
             </div>

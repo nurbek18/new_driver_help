@@ -7,36 +7,29 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <style>
-        /* 确保在小屏幕上语言选择器始终靠右 */
-        @media (max-width: 991.98px) {
-            .mobile-top-nav {
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-            .mobile-right-nav {
-                display: flex;
-                align-items: center;
-            }
-        }
-    </style>
     {% block extracss %}{% endblock %}
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <div class="mobile-top-nav d-flex d-lg-none w-100">
-                <a class="navbar-brand" href="{{ url_for('index') }}">
-                    <i class="fas fa-car-side me-2"></i>{{ _('driver_service_platform') }}
-                </a>
-                
-                <div class="mobile-right-nav">
-                    <!-- Language selector for mobile (visible only on small screens) -->
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-car-side me-2"></i>{{ _('driver_service_platform') }}
+            </a>
+            
+            <div class="d-flex align-items-center">
+                <!-- Language selector for mobile (visible only on small screens) -->
+                <div class="d-flex d-lg-none">
                     <div class="dropdown me-2">
                         <button class="btn btn-outline-light dropdown-toggle" type="button" id="mobileLanguageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-globe"></i>
+                            {% if current_locale == 'ru' %}
+                                RU
+                            {% elif current_locale == 'kk' %}
+                                KZ
+                            {% elif current_locale == 'zh' %}
+                                CN
+                            {% else %}
+                                EN
+                            {% endif %}
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileLanguageDropdown">
                             <li><a class="dropdown-item {% if current_locale == 'ru' %}active{% endif %}" href="{{ url_for('set_language', language='ru', next=request.path) }}">Русский</a></li>
@@ -45,17 +38,12 @@
                             <li><a class="dropdown-item {% if current_locale == 'en' %}active{% endif %}" href="{{ url_for('set_language', language='en', next=request.path) }}">English</a></li>
                         </ul>
                     </div>
-                    <!-- Toggle navigation button -->
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
                 </div>
+                <!-- Toggle navigation button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
             </div>
-            
-            <!-- Desktop navbar brand - only visible on large screens -->
-            <a class="navbar-brand d-none d-lg-block" href="{{ url_for('index') }}">
-                <i class="fas fa-car-side me-2"></i>{{ _('driver_service_platform') }}
-            </a>
             
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">

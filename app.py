@@ -126,6 +126,12 @@ def set_language(language):
     next_page = request.args.get('next') or request.referrer or '/'
     return redirect(next_page)
 
+@app.route('/language')
+def language_page():
+    # Get the next page URL from query parameters
+    next_url = request.args.get('next') or request.referrer or '/'
+    return render_template('language_selector.html', next_url=next_url)
+
 # Main routes
 @app.route('/')
 def index():

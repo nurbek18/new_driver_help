@@ -14,14 +14,6 @@
             padding: 0.25rem 0.5rem;
             font-size: 0.875rem;
         }
-        
-        /* 确保下拉菜单总是向上展开，这样可以避免在页面底部看不到菜单项 */
-        .dropup-menu {
-            top: auto !important;
-            bottom: 100% !important;
-            margin-top: 0 !important;
-            margin-bottom: 0.125rem !important;
-        }
     </style>
     {% block extracss %}{% endblock %}
 </head>
@@ -33,27 +25,19 @@
             </a>
             
             <div class="d-flex align-items-center">
-                <!-- Language selector for mobile (visible only on small screens) -->
-                <div class="d-flex d-lg-none">
-                    <div class="dropup me-2">
-                        <button class="btn btn-outline-light btn-sm lang-btn" type="button" id="mobileLanguageDropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-                            {% if current_locale == 'ru' %}
-                                RU
-                            {% elif current_locale == 'kk' %}
-                                KZ
-                            {% elif current_locale == 'zh' %}
-                                CN
-                            {% else %}
-                                EN
-                            {% endif %}
-                        </button>
-                        <ul class="dropdown-menu dropup-menu dropdown-menu-end" aria-labelledby="mobileLanguageDropdown">
-                            <li><a class="dropdown-item {% if current_locale == 'ru' %}active{% endif %}" href="{{ url_for('set_language', language='ru', next=request.path) }}">RU</a></li>
-                            <li><a class="dropdown-item {% if current_locale == 'kk' %}active{% endif %}" href="{{ url_for('set_language', language='kk', next=request.path) }}">KZ</a></li>
-                            <li><a class="dropdown-item {% if current_locale == 'zh' %}active{% endif %}" href="{{ url_for('set_language', language='zh', next=request.path) }}">CN</a></li>
-                            <li><a class="dropdown-item {% if current_locale == 'en' %}active{% endif %}" href="{{ url_for('set_language', language='en', next=request.path) }}">EN</a></li>
-                        </ul>
-                    </div>
+                <!-- 语言选择器（显示当前语言并链接到独立的语言选择页面） -->
+                <div class="d-flex me-2">
+                    <a href="{{ url_for('language_page', next=request.path) }}" class="btn btn-outline-light btn-sm lang-btn">
+                        {% if current_locale == 'ru' %}
+                            RU
+                        {% elif current_locale == 'kk' %}
+                            KZ
+                        {% elif current_locale == 'zh' %}
+                            CN
+                        {% else %}
+                            EN
+                        {% endif %}
+                    </a>
                 </div>
                 <!-- Toggle navigation button -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,8 +64,8 @@
                 </ul>
                 <div class="d-none d-lg-flex align-items-center">
                     <!-- Desktop Language Selector (only visible on large screens) -->
-                    <div class="dropdown me-3">
-                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="me-3">
+                        <a href="{{ url_for('language_page', next=request.path) }}" class="btn btn-outline-light">
                             <i class="fas fa-globe me-1"></i> 
                             {% if current_locale == 'ru' %}
                                 Русский
@@ -92,13 +76,7 @@
                             {% else %}
                                 English
                             {% endif %}
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
-                            <li><a class="dropdown-item {% if current_locale == 'ru' %}active{% endif %}" href="{{ url_for('set_language', language='ru', next=request.path) }}">RU</a></li>
-                            <li><a class="dropdown-item {% if current_locale == 'kk' %}active{% endif %}" href="{{ url_for('set_language', language='kk', next=request.path) }}">KZ</a></li>
-                            <li><a class="dropdown-item {% if current_locale == 'zh' %}active{% endif %}" href="{{ url_for('set_language', language='zh', next=request.path) }}">CN</a></li>
-                            <li><a class="dropdown-item {% if current_locale == 'en' %}active{% endif %}" href="{{ url_for('set_language', language='en', next=request.path) }}">EN</a></li>
-                        </ul>
+                        </a>
                     </div>
                     
                     {% if current_user.is_authenticated %}

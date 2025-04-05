@@ -16,19 +16,22 @@
                 <i class="fas fa-car-side me-2"></i>{{ _('driver_service_platform') }}
             </a>
             
-            <!-- Language selector for mobile (visible only on small screens) -->
-            <div class="d-flex d-lg-none">
-                <div class="dropdown me-2">
-                    <button class="btn btn-outline-light dropdown-toggle" type="button" id="mobileLanguageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-globe"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileLanguageDropdown">
-                        <li><a class="dropdown-item {% if current_locale == 'ru' %}active{% endif %}" href="{{ url_for('set_language', language='ru', next=request.path) }}">Русский</a></li>
-                        <li><a class="dropdown-item {% if current_locale == 'kk' %}active{% endif %}" href="{{ url_for('set_language', language='kk', next=request.path) }}">Қазақша</a></li>
-                        <li><a class="dropdown-item {% if current_locale == 'zh' %}active{% endif %}" href="{{ url_for('set_language', language='zh', next=request.path) }}">中文</a></li>
-                        <li><a class="dropdown-item {% if current_locale == 'en' %}active{% endif %}" href="{{ url_for('set_language', language='en', next=request.path) }}">English</a></li>
-                    </ul>
+            <div class="d-flex align-items-center">
+                <!-- Language selector for mobile (visible only on small screens) -->
+                <div class="d-flex d-lg-none">
+                    <div class="dropdown me-2">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="mobileLanguageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-globe"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileLanguageDropdown">
+                            <li><a class="dropdown-item {% if current_locale == 'ru' %}active{% endif %}" href="{{ url_for('set_language', language='ru', next=request.path) }}">Русский</a></li>
+                            <li><a class="dropdown-item {% if current_locale == 'kk' %}active{% endif %}" href="{{ url_for('set_language', language='kk', next=request.path) }}">Қазақша</a></li>
+                            <li><a class="dropdown-item {% if current_locale == 'zh' %}active{% endif %}" href="{{ url_for('set_language', language='zh', next=request.path) }}">中文</a></li>
+                            <li><a class="dropdown-item {% if current_locale == 'en' %}active{% endif %}" href="{{ url_for('set_language', language='en', next=request.path) }}">English</a></li>
+                        </ul>
+                    </div>
                 </div>
+                <!-- Toggle navigation button -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>

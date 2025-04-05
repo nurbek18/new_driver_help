@@ -130,8 +130,44 @@ def set_language(language):
 def index():
     return render_template('index.html')
 
-@app.route('/driver_form')
+@app.route('/driver_form', methods=['GET', 'POST'])
 def driver_form():
+    if request.method == 'POST':
+        try:
+            # Get form data
+            data = request.get_json()
+            logging.debug(f"Received data: {data}")
+            
+            # Validate required fields
+            required_fields = ['name', 'age', 'gender', 'phone', 'whatsapp']
+            for field in required_fields:
+                if field not in data:
+                    return jsonify({"error": f"Missing required field: {field}"}), 400
+            
+            # Create new driver
+            new_driver = Driver(
+                driver_code=generate_driver_code(),
+                name=data['name'],
+                age=data['age'],
+                gender=data['gender'],
+                phone=data['phone'],
+                whatsapp=data['whatsapp']
+            )
+            
+            db.session.add(new_driver)
+            db.session.commit()
+            
+            return jsonify({
+                "message": _('driver_added'), 
+                "id": new_driver.id,
+                "driver_code": new_driver.driver_code
+            }), 201
+        
+        except Exception as e:
+            logging.error(f"Error adding driver from form: {e}")
+            db.session.rollback()
+            return jsonify({"error": str(e)}), 500
+    
     return render_template('driver_form.html')
 
 @app.route('/user_view')

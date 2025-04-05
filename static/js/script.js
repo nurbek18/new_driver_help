@@ -50,8 +50,8 @@ function initDriverForm() {
             whatsapp: document.getElementById('whatsapp').value
         };
         
-        // Submit data to the API
-        fetch('/api/drivers', {
+        // Submit data to the driver form endpoint
+        fetch('/driver_form', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

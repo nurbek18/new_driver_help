@@ -73,17 +73,17 @@
     <!-- Main Content -->
     <div class="container main-container">
         <div class="jumbotron text-center">
-            <h1 class="display-4">Welcome to Driver Service Platform</h1>
-            <p class="lead">A convenient way to connect drivers and passengers</p>
+            <h1 class="display-4">{{ _('welcome') }}</h1>
+            <p class="lead">{{ _('connect_drivers_passengers') }}</p>
             <hr class="my-4">
-            <p>Choose your role to get started:</p>
+            <p>{{ _('choose_role') }}</p>
             
             <div class="d-flex justify-content-center flex-wrap mt-4">
                 <a href="{{ url_for('driver_form') }}" class="btn btn-primary role-btn">
-                    <i class="fas fa-id-card me-2"></i> I'm a Driver
+                    <i class="fas fa-id-card me-2"></i> {{ _('im_driver') }}
                 </a>
                 <a href="{{ url_for('user_view') }}" class="btn btn-secondary role-btn">
-                    <i class="fas fa-user me-2"></i> I'm a User
+                    <i class="fas fa-user me-2"></i> {{ _('im_user') }}
                 </a>
             </div>
         </div>
@@ -94,8 +94,8 @@
                 <div class="card h-100">
                     <div class="card-body text-center">
                         <i class="fas fa-car-side fa-3x mb-3 text-primary"></i>
-                        <h3 class="card-title">For Drivers</h3>
-                        <p class="card-text">Register your information and let users know when you're available for driving services.</p>
+                        <h3 class="card-title">{{ _('for_drivers') }}</h3>
+                        <p class="card-text">{{ _('driver_feature_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -103,8 +103,8 @@
                 <div class="card h-100">
                     <div class="card-body text-center">
                         <i class="fas fa-search fa-3x mb-3 text-primary"></i>
-                        <h3 class="card-title">For Users</h3>
-                        <p class="card-text">Browse available drivers, filter by criteria, and connect via WhatsApp.</p>
+                        <h3 class="card-title">{{ _('for_users') }}</h3>
+                        <p class="card-text">{{ _('user_feature_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -112,8 +112,8 @@
                 <div class="card h-100">
                     <div class="card-body text-center">
                         <i class="fas fa-shield-alt fa-3x mb-3 text-primary"></i>
-                        <h3 class="card-title">Safe & Convenient</h3>
-                        <p class="card-text">Easy-to-use platform that connects drivers and passengers safely.</p>
+                        <h3 class="card-title">{{ _('safe_convenient') }}</h3>
+                        <p class="card-text">{{ _('safety_feature_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -123,7 +123,7 @@
     <!-- Footer -->
     <footer class="bg-dark text-light">
         <div class="container text-center">
-            <p class="mb-0">&copy; 2023 Driver Service Platform. All rights reserved.</p>
+            <p class="mb-0">{{ _('footer_copyright') }}</p>
         </div>
     </footer>
 

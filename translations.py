@@ -80,6 +80,7 @@ translations = {
         'logout_successful': 'Logout successful!',
         'invalid_credentials': 'Invalid username or password',
         'admin_access_required': 'You need to be an admin to access this page.',
+        'error_occurred': 'An error occurred. Please try again later.',
     },
     
     'ru': {
@@ -159,6 +160,7 @@ translations = {
         'logout_successful': 'Выход выполнен успешно!',
         'invalid_credentials': 'Неверное имя пользователя или пароль',
         'admin_access_required': 'Для доступа к этой странице необходимо быть администратором.',
+        'error_occurred': 'Произошла ошибка. Пожалуйста, попробуйте позже.',
     },
     
     'kk': {
@@ -238,6 +240,7 @@ translations = {
         'logout_successful': 'Шығу сәтті болды!',
         'invalid_credentials': 'Қате пайдаланушы аты немесе құпия сөз',
         'admin_access_required': 'Бұл бетке кіру үшін әкімші болу керек.',
+        'error_occurred': 'Қате орын алды. Кейінірек қайталап көріңіз.',
     },
     
     'zh': {
@@ -317,5 +320,6 @@ translations = {
         'logout_successful': '退出成功！',
         'invalid_credentials': '用户名或密码错误',
         'admin_access_required': '需要管理员权限才能访问此页面。',
+        'error_occurred': '发生错误。请稍后再试。',
     }
 }

@@ -54,7 +54,12 @@ function initDriverForm() {
             },
             body: JSON.stringify(formData)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.error) {
                 showAlert('danger', 'Error: ' + data.error);
@@ -75,42 +80,74 @@ function initDriverForm() {
 function loadDrivers() {
     const driversList = document.getElementById('drivers-list');
     const loadingSpinner = document.getElementById('loading-spinner');
+    const emptyState = document.getElementById('empty-state');
     
     if (loadingSpinner) {
         loadingSpinner.style.display = 'block';
     }
     
+    if (emptyState) {
+        emptyState.classList.add('d-none');
+    }
+    
+    // Access translations from the global scope
+    const t = window.translations || {
+        contact_whatsapp: "Contact via WhatsApp",
+        available: "Available",
+        unavailable: "Unavailable",
+        age: "Age",
+        gender: "Gender",
+        phone_number: "Phone Number"
+    };
+    
     fetch('/api/drivers')
-        .then(response => response.json())
-        .then(drivers => {
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Received data:', data);
+            
             if (loadingSpinner) {
                 loadingSpinner.style.display = 'none';
             }
             
-            if (drivers.length === 0) {
-                driversList.innerHTML = '<div class="col-12 text-center"><p class="text-muted">No drivers available at this time.</p></div>';
+            if (!Array.isArray(data)) {
+                console.error('Received data is not an array:', data);
+                throw new Error('Invalid data format received from server');
+            }
+            
+            if (data.length === 0) {
+                if (emptyState) {
+                    emptyState.classList.remove('d-none');
+                } else {
+                    driversList.innerHTML = '<div class="col-12 text-center"><p class="text-muted">No drivers available at this time.</p></div>';
+                }
                 return;
             }
             
             driversList.innerHTML = '';
-            drivers.forEach(driver => {
+            data.forEach(driver => {
                 const availabilityStatus = driver.available ? 
-                    '<span class="status-indicator available"></span>Available' : 
-                    '<span class="status-indicator unavailable"></span>Unavailable';
+                    `<span class="status-indicator available"></span>${t.available}` : 
+                    `<span class="status-indicator unavailable"></span>${t.unavailable}`;
                 
                 const driverCard = `
-                    <div class="col-md-6 col-lg-4">
+                    <div class="col-md-6 col-lg-4 mb-4">
                         <div class="card driver-card ${driver.available ? 'border-success' : 'border-danger'}">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">${driver.name}</h5>
                                 <span class="badge ${driver.available ? 'bg-success' : 'bg-danger'}">${availabilityStatus}</span>
                             </div>
                             <div class="card-body">
-                                <p class="card-text"><strong>Age:</strong> ${driver.age}</p>
-                                <p class="card-text"><strong>Gender:</strong> ${driver.gender}</p>
-                                <p class="card-text"><strong>Phone:</strong> ${driver.phone}</p>
+                                <p class="driver-code"><strong>ID:</strong> ${driver.driver_code || 'N/A'}</p>
+                                <p class="card-text"><strong>${t.age}:</strong> ${driver.age}</p>
+                                <p class="card-text"><strong>${t.gender}:</strong> ${driver.gender}</p>
+                                <p class="card-text"><strong>${t.phone_number}:</strong> ${driver.phone}</p>
                                 <a href="https://wa.me/${driver.whatsapp.replace(/\D/g, '')}" target="_blank" class="btn btn-success w-100">
-                                    <i class="fab fa-whatsapp me-2"></i>Contact via WhatsApp
+                                    <i class="fab fa-whatsapp me-2"></i>${t.contact_whatsapp}
                                 </a>
                             </div>
                         </div>
@@ -118,13 +155,16 @@ function loadDrivers() {
                 `;
                 driversList.innerHTML += driverCard;
             });
+            
+            // Apply any active filters
+            filterDrivers();
         })
         .catch(error => {
             if (loadingSpinner) {
                 loadingSpinner.style.display = 'none';
             }
-            driversList.innerHTML = `<div class="col-12 text-center"><p class="alert alert-danger">Error loading drivers: ${error.message}</p></div>`;
             console.error('Error fetching drivers:', error);
+            driversList.innerHTML = `<div class="col-12 text-center"><p class="alert alert-danger">Error loading drivers: ${error.message}</p></div>`;
         });
 }
 
@@ -139,10 +179,11 @@ function filterDrivers() {
             gender: genderFilter.value
         };
         
-        const cards = document.querySelectorAll('.driver-card');
+        const driverCards = document.querySelectorAll('.driver-card');
+        let visibleCount = 0;
         
-        cards.forEach(card => {
-            const parent = card.parentElement;
+        driverCards.forEach(card => {
+            const parent = card.closest('.col-md-6');
             let show = true;
             
             // Check availability filter
@@ -156,15 +197,31 @@ function filterDrivers() {
             
             // Check gender filter
             if (filterOptions.gender !== 'all' && show) {
-                const genderText = card.querySelector('.card-text:nth-child(2)').textContent;
-                if (!genderText.includes(filterOptions.gender)) {
-                    show = false;
+                const genderElement = card.querySelector('.card-text:nth-child(3)');
+                if (genderElement) {
+                    const genderText = genderElement.textContent;
+                    if (!genderText.toLowerCase().includes(filterOptions.gender.toLowerCase())) {
+                        show = false;
+                    }
                 }
             }
             
             // Show or hide based on filters
-            parent.style.display = show ? 'block' : 'none';
+            if (parent) {
+                parent.style.display = show ? 'block' : 'none';
+                if (show) visibleCount++;
+            }
         });
+        
+        // Show empty state if no drivers match filters
+        const emptyState = document.getElementById('empty-state');
+        if (emptyState) {
+            if (visibleCount === 0) {
+                emptyState.classList.remove('d-none');
+            } else {
+                emptyState.classList.add('d-none');
+            }
+        }
     }
 }
 

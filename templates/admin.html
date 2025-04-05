@@ -5,9 +5,14 @@
 {% block content %}
 <div class="mb-4 d-flex justify-content-between align-items-center">
     <h2><i class="fas fa-user-shield me-2"></i>{{ _('admin_panel') }}</h2>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDriverModal">
-        <i class="fas fa-plus me-2"></i>{{ _('add_driver') }}
-    </button>
+    <div>
+        <a href="{{ url_for('admin_profile') }}" class="btn btn-outline-secondary me-2">
+            <i class="fas fa-user-cog me-2"></i>{{ _('profile_settings') }}
+        </a>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDriverModal">
+            <i class="fas fa-plus me-2"></i>{{ _('add_driver') }}
+        </button>
+    </div>
 </div>
 
 <!-- Search Bar -->
@@ -346,7 +351,7 @@
                 const driverId = this.getAttribute('data-driver-id');
                 document.getElementById('delete-driver-id').value = driverId;
                 
-                // Show the delete confirmation modal
+                // Show the delete modal
                 new bootstrap.Modal(document.getElementById('deleteDriverModal')).show();
             });
         });
@@ -362,7 +367,7 @@
             .then(data => {
                 if (data.message) {
                     showAlert('success', data.message);
-                    // Reload page to update the driver list
+                    // Reload page to update the drivers list
                     setTimeout(() => {
                         location.reload();
                     }, 1500);
@@ -380,19 +385,18 @@
             });
         });
         
-        // Search functionality
+        // Setup admin search functionality
         document.getElementById('search-btn').addEventListener('click', function() {
             const searchQuery = document.getElementById('admin-search-input').value.trim();
             if (searchQuery) {
-                // Call search API
                 fetch(`/api/drivers?search=${encodeURIComponent(searchQuery)}`)
                 .then(response => response.json())
                 .then(drivers => {
                     updateDriversTable(drivers);
                 })
                 .catch(error => {
-                    console.error('Search error:', error);
-                    showAlert('danger', 'Error searching for drivers');
+                    console.error('Error searching drivers:', error);
+                    showAlert('danger', 'An error occurred while searching drivers.');
                 });
             }
         });
@@ -407,63 +411,50 @@
             })
             .catch(error => {
                 console.error('Error resetting search:', error);
+                showAlert('danger', 'An error occurred while resetting the search.');
             });
         });
         
-        // Add enter key event for search input
-        document.getElementById('admin-search-input').addEventListener('keyup', function(event) {
-            if (event.key === 'Enter') {
-                document.getElementById('search-btn').click();
-            }
-        });
-        
-        // Function to update the drivers table with search results
+        // Function to update drivers table
         function updateDriversTable(drivers) {
             const tableBody = document.getElementById('drivers-table-body');
             tableBody.innerHTML = '';
             
             if (drivers.length === 0) {
-                // No drivers found
                 const row = document.createElement('tr');
                 row.innerHTML = `<td colspan="7" class="text-center">{{ _('no_drivers_found') }}</td>`;
                 tableBody.appendChild(row);
-            } else {
-                // Create table rows for each driver
-                drivers.forEach(driver => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${driver.driver_code}</td>
-                        <td>${driver.name}</td>
-                        <td>${driver.age}</td>
-                        <td>${driver.gender}</td>
-                        <td>${driver.phone}</td>
-                        <td>${driver.whatsapp}</td>
-                        <td>
-                            <button class="btn btn-sm btn-primary edit-driver" 
-                                data-driver-id="${driver.id}"
-                                data-driver-name="${driver.name}"
-                                data-driver-age="${driver.age}"
-                                data-driver-gender="${driver.gender}"
-                                data-driver-phone="${driver.phone}"
-                                data-driver-whatsapp="${driver.whatsapp}">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-driver" data-driver-id="${driver.id}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-                
-                // Re-attach event listeners to the new buttons
-                attachEventListeners();
+                return;
             }
-        }
-        
-        // Function to attach event listeners to dynamically created buttons
-        function attachEventListeners() {
-            // Edit buttons
+            
+            drivers.forEach(driver => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${driver.driver_code}</td>
+                    <td>${driver.name}</td>
+                    <td>${driver.age}</td>
+                    <td>${driver.gender}</td>
+                    <td>${driver.phone}</td>
+                    <td>${driver.whatsapp}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary edit-driver" 
+                            data-driver-id="${driver.id}"
+                            data-driver-name="${driver.name}"
+                            data-driver-age="${driver.age}"
+                            data-driver-gender="${driver.gender}"
+                            data-driver-phone="${driver.phone}"
+                            data-driver-whatsapp="${driver.whatsapp}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger delete-driver" data-driver-id="${driver.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            // Reattach event listeners to new buttons
             document.querySelectorAll('.edit-driver').forEach(button => {
                 button.addEventListener('click', function() {
                     const driverId = this.getAttribute('data-driver-id');
@@ -479,38 +470,24 @@
                 });
             });
             
-            // Delete buttons
             document.querySelectorAll('.delete-driver').forEach(button => {
                 button.addEventListener('click', function() {
                     const driverId = this.getAttribute('data-driver-id');
                     document.getElementById('delete-driver-id').value = driverId;
                     
-                    // Show the delete confirmation modal
+                    // Show the delete modal
                     new bootstrap.Modal(document.getElementById('deleteDriverModal')).show();
                 });
             });
         }
-    });
-    
-    // Helper function to show alerts
-    function showAlert(type, message) {
-        const alertDiv = document.createElement('div');
-        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;
-        alertDiv.style.zIndex = "9999";
-        alertDiv.style.maxWidth = "90%";
-        alertDiv.innerHTML = `
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        `;
-        document.body.appendChild(alertDiv);
         
-        // Automatically dismiss after 5 seconds
-        setTimeout(() => {
-            alertDiv.classList.remove('show');
-            setTimeout(() => {
-                document.body.removeChild(alertDiv);
-            }, 500);
-        }, 5000);
-    }
+        // Allow searching on Enter key press
+        document.getElementById('admin-search-input').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                document.getElementById('search-btn').click();
+            }
+        });
+    });
 </script>
 {% endblock %}

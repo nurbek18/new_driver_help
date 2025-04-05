@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ _('admin_profile') }} - {{ _('driver_service_platform') }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>{{ _('admin_profile_settings') }}</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin_profile') }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        <label for="username" class="form-label">{{ _('username') }}</label>
+                        <input type="text" class="form-control" id="username" name="username" value="{{ current_user.username }}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">{{ _('email') }}</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ current_user.email }}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="current_password" class="form-label">{{ _('current_password') }}</label>
+                        <input type="password" class="form-control" id="current_password" name="current_password" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="new_password" class="form-label">{{ _('new_password') }}</label>
+                        <input type="password" class="form-control" id="new_password" name="new_password">
+                        <small class="text-muted">{{ _('leave_blank_to_keep_current') }}</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">{{ _('confirm_password') }}</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary me-md-2">{{ _('cancel') }}</a>
+                        <button type="submit" class="btn btn-primary">{{ _('save_changes') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

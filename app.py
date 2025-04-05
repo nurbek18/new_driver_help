@@ -162,6 +162,51 @@ def admin_dashboard():
     drivers = Driver.query.all()
     return render_template('admin.html', drivers=drivers)
 
+# Admin profile route
+@app.route('/admin/profile', methods=['GET', 'POST'])
+@login_required
+def admin_profile():
+    if not current_user.is_admin:
+        flash(_('admin_access_required'))
+        return redirect(url_for('index'))
+    
+    # Create a form instance (using WTForms)
+    class ProfileForm:
+        def hidden_tag(self):
+            return ''
+    
+    form = ProfileForm()
+    
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        current_password = request.form.get('current_password')
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+        
+        # Check current password
+        if not check_password_hash(current_user.password_hash, current_password):
+            flash(_('incorrect_password'), 'danger')
+            return render_template('admin_profile.html', form=form)
+        
+        # Update user profile
+        current_user.username = username
+        current_user.email = email
+        
+        # If new password provided, update it
+        if new_password:
+            if new_password != confirm_password:
+                flash(_('passwords_dont_match'), 'danger')
+                return render_template('admin_profile.html', form=form)
+            
+            current_user.password_hash = generate_password_hash(new_password)
+        
+        db.session.commit()
+        flash(_('profile_updated'), 'success')
+        return redirect(url_for('admin_dashboard'))
+    
+    return render_template('admin_profile.html', form=form)
+
 # API endpoints
 @app.route('/api/drivers', methods=['GET'])
 def get_drivers():

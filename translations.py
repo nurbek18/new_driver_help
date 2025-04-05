@@ -60,11 +60,22 @@ translations = {
         
         # Admin
         'admin_panel': 'Admin Panel',
+        'admin_profile': 'Admin Profile',
+        'admin_profile_settings': 'Admin Profile Settings',
+        'profile_settings': 'Profile Settings',
         'login': 'Login',
         'logout': 'Logout',
         'username': 'Username',
         'password': 'Password',
         'email': 'Email',
+        'current_password': 'Current Password',
+        'new_password': 'New Password',
+        'confirm_password': 'Confirm Password',
+        'save_changes': 'Save Changes',
+        'leave_blank_to_keep_current': 'Leave blank to keep current password',
+        'profile_updated': 'Profile updated successfully',
+        'incorrect_password': 'Current password is incorrect',
+        'passwords_dont_match': 'New passwords do not match',
         'add_driver': 'Add Driver',
         'edit_driver': 'Edit Driver',
         'delete_driver': 'Delete Driver',
@@ -140,6 +151,7 @@ translations = {
         
         # Admin
         'admin_panel': 'Панель администратора',
+        'profile_settings': 'Настройки профиля',
         'login': 'Вход',
         'logout': 'Выход',
         'username': 'Имя пользователя',
@@ -161,6 +173,16 @@ translations = {
         'admin_access_required': 'Для доступа к этой странице необходимо быть администратором.',
         'error_occurred': 'Произошла ошибка. Пожалуйста, попробуйте позже.',
         'admin_login_message': 'Если вы администратор, пожалуйста, войдите в систему',
+        'admin_profile': 'Профиль администратора',
+        'current_password': 'Текущий пароль',
+        'new_password': 'Новый пароль',
+        'confirm_password': 'Подтвердите новый пароль',
+        'save_changes': 'Сохранить изменения',
+        'leave_blank_no_change': 'Оставьте пустым, если не хотите менять пароль',
+        'password_changed_success': 'Пароль успешно изменен',
+        'current_password_incorrect': 'Текущий пароль неверен',
+        'passwords_dont_match': 'Новые пароли не совпадают',
+        'profile_updated': 'Профиль успешно обновлен',
     },
     
     'kk': {
@@ -325,3 +347,45 @@ translations = {
         'admin_login_message': '如果您是管理员，请登录',
     }
 }
+# Add missing admin profile translations for kk language
+translations['kk'].update({
+    'admin_profile': 'Әкімші профилі',
+    'admin_profile_settings': 'Әкімші профилі параметрлері',
+    'profile_settings': 'Профиль параметрлері',
+    'current_password': 'Ағымдағы құпия сөз',
+    'new_password': 'Жаңа құпия сөз',
+    'confirm_password': 'Құпия сөзді растаңыз',
+    'save_changes': 'Өзгерістерді сақтау',
+    'leave_blank_to_keep_current': 'Ағымдағы құпия сөзді сақтау үшін бос қалдырыңыз',
+    'profile_updated': 'Профиль сәтті жаңартылды',
+    'incorrect_password': 'Ағымдағы құпия сөз дұрыс емес',
+    'passwords_dont_match': 'Жаңа құпия сөздер сәйкес келмейді',
+})
+
+# Add missing admin profile translations for zh language
+translations['zh'].update({
+    'admin_profile': '管理员资料',
+    'admin_profile_settings': '管理员资料设置',
+    'profile_settings': '个人设置',
+    'current_password': '当前密码',
+    'new_password': '新密码',
+    'confirm_password': '确认密码',
+    'save_changes': '保存更改',
+    'leave_blank_to_keep_current': '如果不想更改密码，请留空',
+    'profile_updated': '资料已成功更新',
+    'incorrect_password': '当前密码不正确',
+    'passwords_dont_match': '新密码不匹配',
+})
+
+# Add missing admin profile translations for en language
+translations['en'].update({
+    'admin_profile_settings': 'Admin Profile Settings',
+    'current_password': 'Current Password',
+    'new_password': 'New Password',
+    'confirm_password': 'Confirm Password',
+    'save_changes': 'Save Changes',
+    'leave_blank_to_keep_current': 'Leave blank to keep current password',
+    'profile_updated': 'Profile updated successfully',
+    'incorrect_password': 'Current password is incorrect',
+    'passwords_dont_match': 'New passwords do not match',
+})

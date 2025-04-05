@@ -40,11 +40,6 @@
                         <a class="nav-link {% if request.path == '/admin' %}active{% endif %}" href="{{ url_for('admin_dashboard') }}">{{ _('admin_panel') }}</a>
                     </li>
                     {% endif %}
-                    {% if current_user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('logout') }}">{{ _('logout') }}</a>
-                    </li>
-                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -88,9 +83,18 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-dark text-light">
+    <footer class="bg-dark text-light py-3">
         <div class="container text-center">
             <p class="mb-0">{{ _('footer_copyright') }}</p>
+            {% if not current_user.is_authenticated %}
+            <p class="mt-2 small">
+                <a href="{{ url_for('login') }}" class="text-muted">{{ _('admin_login_message') }}</a>
+            </p>
+            {% else %}
+            <p class="mt-2 small">
+                <a href="{{ url_for('logout') }}" class="text-muted">{{ _('logout') }}</a>
+            </p>
+            {% endif %}
         </div>
     </footer>
 

@@ -80,6 +80,7 @@ translations = {
         'invalid_credentials': 'Invalid username or password',
         'admin_access_required': 'You need to be an admin to access this page.',
         'error_occurred': 'An error occurred. Please try again later.',
+        'admin_login_message': 'If you are an administrator, please login',
     },
     
     'ru': {
@@ -159,6 +160,7 @@ translations = {
         'invalid_credentials': 'Неверное имя пользователя или пароль',
         'admin_access_required': 'Для доступа к этой странице необходимо быть администратором.',
         'error_occurred': 'Произошла ошибка. Пожалуйста, попробуйте позже.',
+        'admin_login_message': 'Если вы администратор, пожалуйста, войдите в систему',
     },
     
     'kk': {
@@ -239,6 +241,7 @@ translations = {
         'invalid_credentials': 'Қате пайдаланушы аты немесе құпия сөз',
         'admin_access_required': 'Бұл бетке кіру үшін әкімші болу керек.',
         'error_occurred': 'Қате орын алды. Кейінірек қайталап көріңіз.',
+        'admin_login_message': 'Егер сіз әкімші болсаңыз, жүйеге кіріңіз',
     },
     
     'zh': {
@@ -319,5 +322,6 @@ translations = {
         'invalid_credentials': '用户名或密码错误',
         'admin_access_required': '需要管理员权限才能访问此页面。',
         'error_occurred': '发生错误。请稍后再试。',
+        'admin_login_message': '如果您是管理员，请登录',
     }
 }

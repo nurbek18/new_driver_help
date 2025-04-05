@@ -7,7 +7,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
-    locale = db.Column(db.String(2), default='en')
+    locale = db.Column(db.String(2), default='ru')
     
     def __repr__(self):
         return f'<User {self.username}>'

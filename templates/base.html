@@ -36,6 +36,28 @@
                     {% endif %}
                 </ul>
                 <div class="d-flex align-items-center">
+                    <!-- Language Selector -->
+                    <div class="dropdown me-3">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-globe me-1"></i> 
+                            {% if current_locale == 'ru' %}
+                                Русский
+                            {% elif current_locale == 'kk' %}
+                                Қазақша
+                            {% elif current_locale == 'zh' %}
+                                中文
+                            {% else %}
+                                English
+                            {% endif %}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                            <li><a class="dropdown-item {% if current_locale == 'ru' %}active{% endif %}" href="{{ url_for('set_language', language='ru', next=request.path) }}">Русский</a></li>
+                            <li><a class="dropdown-item {% if current_locale == 'kk' %}active{% endif %}" href="{{ url_for('set_language', language='kk', next=request.path) }}">Қазақша</a></li>
+                            <li><a class="dropdown-item {% if current_locale == 'zh' %}active{% endif %}" href="{{ url_for('set_language', language='zh', next=request.path) }}">中文</a></li>
+                            <li><a class="dropdown-item {% if current_locale == 'en' %}active{% endif %}" href="{{ url_for('set_language', language='en', next=request.path) }}">English</a></li>
+                        </ul>
+                    </div>
+                    
                     {% if current_user.is_authenticated %}
                     <div class="dropdown">
                         <button class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">

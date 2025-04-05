@@ -446,3 +446,26 @@ translations['en'].update({
     'support_whatsapp_number': 'Support WhatsApp Number',
     'whatsapp_number_desc': 'This number will be displayed in the "Need Help?" section on the homepage.'
 })
+
+# Add missing admin profile translations for kk language
+translations['kk'].update({
+    'search': 'Іздеу',
+    'reset': 'Қалпына келтіру',
+    'search_by_name_code_phone': 'Аты, коды немесе телефон нөмірі бойынша іздеу',
+    'admin_profile': 'Әкімші профилі',
+    'admin_profile_settings': 'Әкімші профиль параметрлері',
+    'profile_settings': 'Профиль параметрлері',
+    'current_password': 'Ағымдағы құпия сөз',
+    'new_password': 'Жаңа құпия сөз',
+    'confirm_password': 'Құпия сөзді растау',
+    'save_changes': 'Өзгерістерді сақтау',
+    'leave_blank_to_keep_current': 'Ағымдағы құпия сөзді сақтау үшін бос қалдырыңыз',
+    'profile_updated': 'Профиль сәтті жаңартылды',
+    'incorrect_password': 'Ағымдағы құпия сөз дұрыс емес',
+    'passwords_dont_match': 'Жаңа құпия сөздер сәйкес келмейді',
+    'admin_settings': 'Әкімші параметрлері',
+    'settings_updated': 'Параметрлер сәтті жаңартылды',
+    'invalid_whatsapp': 'Жарамсыз WhatsApp нөмірі',
+    'support_whatsapp_number': 'Қолдау WhatsApp нөмірі',
+    'whatsapp_number_desc': 'Бұл нөмір басты беттегі "Көмек керек пе?" бөлімінде көрсетіледі.'
+})

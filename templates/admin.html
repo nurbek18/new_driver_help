@@ -9,6 +9,19 @@
         <a href="{{ url_for('admin_profile') }}" class="btn btn-outline-secondary me-2">
             <i class="fas fa-user-cog me-2"></i>{{ _('profile_settings') }}
         </a>
+        <a href="{{ url_for('admin_settings') }}" class="btn btn-outline-secondary me-2">
+            <i class="fas fa-cogs me-2"></i>{{ _('admin_settings') }}
+        </a>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDriverModal">
+            <i class="fas fa-plus me-2"></i>{{ _('add_driver') }}
+        </button>
+    </div>
+        <a href="{{ url_for('admin_profile') }}" class="btn btn-outline-secondary me-2">
+            <i class="fas fa-user-cog me-2"></i>{{ _('profile_settings') }}
+        </a>
+        <a href="{{ url_for('admin_settings') }}" class="btn btn-outline-secondary me-2">
+            <i class="fas fa-cogs me-2"></i>{{ _('admin_settings') }}
+        </a>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDriverModal">
             <i class="fas fa-plus me-2"></i>{{ _('add_driver') }}
         </button>

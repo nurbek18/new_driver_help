@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('admin_settings') }} - {{ _('driver_service_platform') }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="list-group">
+            <a href="{{ url_for('admin_dashboard') }}" class="list-group-item list-group-item-action">
+                <i class="fas fa-tachometer-alt me-2"></i> {{ _('admin_panel') }}
+            </a>
+            <a href="{{ url_for('admin_profile') }}" class="list-group-item list-group-item-action">
+                <i class="fas fa-user-cog me-2"></i> {{ _('admin_profile') }}
+            </a>
+            <a href="{{ url_for('admin_settings') }}" class="list-group-item list-group-item-action active">
+                <i class="fas fa-cogs me-2"></i> {{ _('admin_settings') }}
+            </a>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0"><i class="fas fa-cogs me-2"></i>{{ _('admin_settings') }}</h2>
+            </div>
+            <div class="card-body">
+                <form method="post" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="support_whatsapp" class="form-label">{{ _('support_whatsapp_number') }}</label>
+                        <input type="text" class="form-control" id="support_whatsapp" name="support_whatsapp" 
+                               value="{{ support_whatsapp }}" required>
+                        <div class="form-text">{{ _('whatsapp_number_desc') }}</div>
+                        <div class="form-text">{{ _('include_country_code') }}</div>
+                        <div class="invalid-feedback">
+                            {{ _('invalid_whatsapp') }}
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">{{ _('cancel') }}</a>
+                        <button type="submit" class="btn btn-primary">{{ _('save_changes') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Enable form validation
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms).forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    });
+</script>
+{% endblock %}

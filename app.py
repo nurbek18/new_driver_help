@@ -45,7 +45,7 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 # Import models after app and db are defined to avoid circular imports
-from models import User, Driver
+from models import User, Driver, Setting
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -66,6 +66,17 @@ with app.app_context():
         db.session.add(admin_user)
         db.session.commit()
         logging.info("Admin user created")
+    
+    # Create default settings if they don't exist
+    if not Setting.query.filter_by(key='support_whatsapp').first():
+        support_whatsapp = Setting(
+            key='support_whatsapp',
+            value='+77082836678',
+            description='WhatsApp number for customer support'
+        )
+        db.session.add(support_whatsapp)
+        db.session.commit()
+        logging.info("Default settings created")
 
 # Generate driver code function
 def generate_driver_code():
@@ -94,7 +105,15 @@ def before_request():
 
 @app.context_processor
 def utility_processor():
-    return {'_': _, 'current_locale': session.get('locale', 'ru')}
+    # Get support WhatsApp number from settings
+    support_whatsapp = Setting.query.filter_by(key='support_whatsapp').first()
+    whatsapp_number = support_whatsapp.value if support_whatsapp else '+77082836678'
+    
+    return {
+        '_': _, 
+        'current_locale': session.get('locale', 'ru'),
+        'support_whatsapp': whatsapp_number
+    }
 
 # Routes for language switching
 @app.route('/set_language/<language>')
@@ -206,6 +225,40 @@ def admin_profile():
         return redirect(url_for('admin_dashboard'))
     
     return render_template('admin_profile.html', form=form)
+
+# Admin settings route
+@app.route('/admin/settings', methods=['GET', 'POST'])
+@login_required
+def admin_settings():
+    if not current_user.is_admin:
+        flash(_('admin_access_required'))
+        return redirect(url_for('index'))
+    
+    # Get support WhatsApp setting
+    support_whatsapp = Setting.query.filter_by(key='support_whatsapp').first()
+    
+    if request.method == 'POST':
+        # Update WhatsApp number
+        whatsapp_number = request.form.get('support_whatsapp')
+        
+        if whatsapp_number:
+            if support_whatsapp:
+                support_whatsapp.value = whatsapp_number
+            else:
+                support_whatsapp = Setting(
+                    key='support_whatsapp',
+                    value=whatsapp_number,
+                    description='WhatsApp number for customer support'
+                )
+                db.session.add(support_whatsapp)
+            
+            db.session.commit()
+            flash(_('settings_updated'), 'success')
+            return redirect(url_for('admin_dashboard'))
+        else:
+            flash(_('invalid_whatsapp'), 'danger')
+    
+    return render_template('admin_settings.html', support_whatsapp=support_whatsapp.value if support_whatsapp else '')
 
 # API endpoints
 @app.route('/api/drivers', methods=['GET'])

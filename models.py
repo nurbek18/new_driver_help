@@ -23,3 +23,12 @@ class Driver(db.Model):
     
     def __repr__(self):
         return f'<Driver {self.name}>'
+
+class Setting(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    key = db.Column(db.String(50), unique=True, nullable=False)
+    value = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.String(255), nullable=True)
+
+    def __repr__(self):
+        return f'<Setting {self.key}>'

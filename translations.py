@@ -197,6 +197,11 @@ translations = {
         'current_password_incorrect': 'Текущий пароль неверен',
         'passwords_dont_match': 'Новые пароли не совпадают',
         'profile_updated': 'Профиль успешно обновлен',
+        'admin_settings': 'Настройки администратора',
+        'settings_updated': 'Настройки успешно обновлены',
+        'invalid_whatsapp': 'Неверный номер WhatsApp',
+        'support_whatsapp_number': 'Номер WhatsApp службы поддержки',
+        'whatsapp_number_desc': 'Этот номер будет отображаться в разделе "Нужна помощь?" на главной странице.',
     },
     
     'kk': {
@@ -377,6 +382,9 @@ translations = {
 }
 # Add missing admin profile translations for kk language
 translations['kk'].update({
+    'search': 'Іздеу',
+    'reset': 'Қалпына келтіру',
+    'search_by_name_code_phone': 'Аты, коды немесе телефон нөмірі бойынша іздеу',
     'admin_profile': 'Әкімші профилі',
     'admin_profile_settings': 'Әкімші профилі параметрлері',
     'profile_settings': 'Профиль параметрлері',
@@ -388,10 +396,18 @@ translations['kk'].update({
     'profile_updated': 'Профиль сәтті жаңартылды',
     'incorrect_password': 'Ағымдағы құпия сөз дұрыс емес',
     'passwords_dont_match': 'Жаңа құпия сөздер сәйкес келмейді',
+    'admin_settings': 'Әкімші параметрлері',
+    'settings_updated': 'Параметрлер сәтті жаңартылды',
+    'invalid_whatsapp': 'Жарамсыз WhatsApp нөмірі',
+    'support_whatsapp_number': 'Қолдау көрсету WhatsApp нөмірі',
+    'whatsapp_number_desc': 'Бұл нөмір басты беттегі "Көмек керек пе?" бөлімінде көрсетіледі.'
 })
 
 # Add missing admin profile translations for zh language
 translations['zh'].update({
+    'search': '搜索',
+    'reset': '重置',
+    'search_by_name_code_phone': '按姓名、代码或电话号码搜索',
     'admin_profile': '管理员资料',
     'admin_profile_settings': '管理员资料设置',
     'profile_settings': '个人设置',
@@ -403,10 +419,18 @@ translations['zh'].update({
     'profile_updated': '资料已成功更新',
     'incorrect_password': '当前密码不正确',
     'passwords_dont_match': '新密码不匹配',
+    'admin_settings': '管理员设置',
+    'settings_updated': '设置已成功更新',
+    'invalid_whatsapp': '无效的WhatsApp号码',
+    'support_whatsapp_number': '支持WhatsApp号码',
+    'whatsapp_number_desc': '此号码将显示在首页的"需要帮助？"部分。'
 })
 
 # Add missing admin profile translations for en language
 translations['en'].update({
+    'search': 'Search',
+    'reset': 'Reset',
+    'search_by_name_code_phone': 'Search by name, code or phone number',
     'admin_profile_settings': 'Admin Profile Settings',
     'current_password': 'Current Password',
     'new_password': 'New Password',
@@ -416,4 +440,9 @@ translations['en'].update({
     'profile_updated': 'Profile updated successfully',
     'incorrect_password': 'Current password is incorrect',
     'passwords_dont_match': 'New passwords do not match',
+    'admin_settings': 'Admin Settings',
+    'settings_updated': 'Settings updated successfully',
+    'invalid_whatsapp': 'Invalid WhatsApp number',
+    'support_whatsapp_number': 'Support WhatsApp Number',
+    'whatsapp_number_desc': 'This number will be displayed in the "Need Help?" section on the homepage.'
 })

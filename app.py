@@ -96,12 +96,10 @@ def _(text):
 @app.before_request
 def before_request():
     if 'locale' not in session:
-        session['locale'] = 'ru'  # Default to Russian
-    
-    # If user is logged in, use their preferred locale
-    if current_user.is_authenticated and current_user.locale:
-        if current_user.locale != session.get('locale'):
+        if current_user.is_authenticated and current_user.locale:
             session['locale'] = current_user.locale
+        else:
+            session['locale'] = 'ru'  # Default to Russian
 
 @app.context_processor
 def utility_processor():
@@ -185,9 +183,9 @@ def login():
         if user and check_password_hash(user.password_hash, password):
             # Use Flask-Login to log in the user
             login_user(user)
-            # Set user locale in session if not already set
-            if not session.get('locale'):
-                session['locale'] = user.locale
+            
+            # Do not override user's selected language
+            # Keep previous session['locale'] value
             
             flash(_('login_successful'))
             next_page = request.args.get('next')

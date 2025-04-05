@@ -46,6 +46,8 @@
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
+                        <th>#</th>
+                        <th>#</th>
                         <th>{{ _('driver_code') }}</th>
                         <th>{{ _('full_name') }}</th>
                         <th>{{ _('age') }}</th>
@@ -56,6 +58,7 @@
                     </tr>
                 </thead>
                 <tbody id="drivers-table-body">
+                        <td>{{ loop.index }}</td>
                     {% for driver in drivers %}
                     <tr>
                         <td>{{ driver.driver_code }}</td>

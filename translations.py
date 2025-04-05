@@ -43,6 +43,13 @@ translations = {
         'select_your_gender': 'Please select your gender.',
         'provide_phone': 'Please provide your phone number.',
         'provide_whatsapp': 'Please provide your WhatsApp number.',
+        'success_description': 'You have been successfully registered as a driver!',
+        'driver_code_text': 'Your driver code is:',
+        'remember_driver_code': 'Please remember your driver code! It is important for identification.',
+        'close': 'Close',
+        'need_help': 'Need Help?',
+        'contact_support_desc': 'If you have any questions or need assistance, feel free to contact our support team.',
+        'contact_via_whatsapp': 'Contact Support via WhatsApp',
         
         # User View
         'available_drivers': 'Available Drivers',
@@ -134,6 +141,13 @@ translations = {
         'select_your_gender': 'Пожалуйста, выберите ваш пол.',
         'provide_phone': 'Пожалуйста, укажите ваш номер телефона.',
         'provide_whatsapp': 'Пожалуйста, укажите ваш номер WhatsApp.',
+        'success_description': 'Вы успешно зарегистрированы как водитель!',
+        'driver_code_text': 'Ваш код водителя:',
+        'remember_driver_code': 'Пожалуйста, запомните ваш код водителя! Он важен для идентификации.',
+        'close': 'Закрыть',
+        'need_help': 'Нужна помощь?',
+        'contact_support_desc': 'Если у вас есть вопросы или вам нужна помощь, не стесняйтесь обращаться в нашу службу поддержки.',
+        'contact_via_whatsapp': 'Связаться с поддержкой через WhatsApp',
         
         # User View
         'available_drivers': 'Доступные водители',
@@ -225,6 +239,13 @@ translations = {
         'select_your_gender': 'Жынысыңызды таңдаңыз.',
         'provide_phone': 'Телефон нөміріңізді көрсетіңіз.',
         'provide_whatsapp': 'WhatsApp нөміріңізді көрсетіңіз.',
+        'success_description': 'Сіз жүргізуші ретінде сәтті тіркелдіңіз!',
+        'driver_code_text': 'Жүргізуші кодыңыз:',
+        'remember_driver_code': 'Жүргізуші кодыңызды есте сақтаңыз! Бұл сәйкестендіру үшін маңызды.',
+        'close': 'Жабу',
+        'need_help': 'Көмек керек пе?',
+        'contact_support_desc': 'Егер сізде сұрақтар бар болса немесе көмек қажет болса, біздің қолдау көрсету тобына хабарласыңыз.',
+        'contact_via_whatsapp': 'WhatsApp арқылы қолдауға хабарласыңыз',
         
         # User View
         'available_drivers': 'Қол жетімді жүргізушілер',
@@ -306,6 +327,13 @@ translations = {
         'select_your_gender': '请选择您的性别。',
         'provide_phone': '请提供您的电话号码。',
         'provide_whatsapp': '请提供您的WhatsApp号码。',
+        'success_description': '您已成功注册为司机！',
+        'driver_code_text': '您的司机代码是：',
+        'remember_driver_code': '请记住您的司机代码！它对身份识别很重要。',
+        'close': '关闭',
+        'need_help': '需要帮助？',
+        'contact_support_desc': '如果您有任何问题或需要帮助，请随时联系我们的支持团队。',
+        'contact_via_whatsapp': '通过WhatsApp联系支持',
         
         # User View
         'available_drivers': '可用司机',

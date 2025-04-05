@@ -14,47 +14,40 @@
             padding: 0.25rem 0.5rem;
             font-size: 0.875rem;
         }
-        
-        /* 确保移动设备上的菜单按钮总是在右侧 */
-        .mobile-nav-container {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            align-items: center;
-        }
     </style>
     {% block extracss %}{% endblock %}
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container position-relative">
+        <div class="container">
             <a class="navbar-brand" href="{{ url_for('index') }}">
                 <i class="fas fa-car-side me-2"></i>{{ _('driver_service_platform') }}
             </a>
             
-            <!-- 语言选择器和菜单按钮固定在右上角 -->
-            <div class="mobile-nav-container d-lg-none">
-                <div class="dropdown me-2">
-                    <button class="btn btn-outline-light btn-sm lang-btn" type="button" id="mobileLanguageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        {% if current_locale == 'ru' %}
-                            RU
-                        {% elif current_locale == 'kk' %}
-                            KZ
-                        {% elif current_locale == 'zh' %}
-                            CN
-                        {% else %}
-                            EN
-                        {% endif %}
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileLanguageDropdown">
-                        <li><a class="dropdown-item {% if current_locale == 'ru' %}active{% endif %}" href="{{ url_for('set_language', language='ru', next=request.path) }}">RU</a></li>
-                        <li><a class="dropdown-item {% if current_locale == 'kk' %}active{% endif %}" href="{{ url_for('set_language', language='kk', next=request.path) }}">KZ</a></li>
-                        <li><a class="dropdown-item {% if current_locale == 'zh' %}active{% endif %}" href="{{ url_for('set_language', language='zh', next=request.path) }}">CN</a></li>
-                        <li><a class="dropdown-item {% if current_locale == 'en' %}active{% endif %}" href="{{ url_for('set_language', language='en', next=request.path) }}">EN</a></li>
-                    </ul>
+            <div class="d-flex align-items-center">
+                <!-- Language selector for mobile (visible only on small screens) -->
+                <div class="d-flex d-lg-none">
+                    <div class="dropdown me-2">
+                        <button class="btn btn-outline-light btn-sm lang-btn" type="button" id="mobileLanguageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            {% if current_locale == 'ru' %}
+                                RU
+                            {% elif current_locale == 'kk' %}
+                                KZ
+                            {% elif current_locale == 'zh' %}
+                                CN
+                            {% else %}
+                                EN
+                            {% endif %}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileLanguageDropdown">
+                            <li><a class="dropdown-item {% if current_locale == 'ru' %}active{% endif %}" href="{{ url_for('set_language', language='ru', next=request.path) }}">RU</a></li>
+                            <li><a class="dropdown-item {% if current_locale == 'kk' %}active{% endif %}" href="{{ url_for('set_language', language='kk', next=request.path) }}">KZ</a></li>
+                            <li><a class="dropdown-item {% if current_locale == 'zh' %}active{% endif %}" href="{{ url_for('set_language', language='zh', next=request.path) }}">CN</a></li>
+                            <li><a class="dropdown-item {% if current_locale == 'en' %}active{% endif %}" href="{{ url_for('set_language', language='en', next=request.path) }}">EN</a></li>
+                        </ul>
+                    </div>
                 </div>
+                <!-- Toggle navigation button -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>

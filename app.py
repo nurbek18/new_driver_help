@@ -155,7 +155,22 @@ def admin_dashboard():
 @app.route('/api/drivers', methods=['GET'])
 def get_drivers():
     try:
-        drivers = Driver.query.all()
+        # Filter by availability if specified
+        availability = request.args.get('availability')
+        gender = request.args.get('gender')
+        
+        query = Driver.query
+        
+        if availability == 'available':
+            query = query.filter_by(available=True)
+        elif availability == 'unavailable':
+            query = query.filter_by(available=False)
+            
+        if gender and gender != 'all':
+            query = query.filter_by(gender=gender)
+            
+        drivers = query.all()
+        
         return jsonify([{
             'id': driver.id,
             'driver_code': driver.driver_code,
@@ -171,8 +186,13 @@ def get_drivers():
         return jsonify({"error": str(e)}), 500
 
 @app.route('/api/drivers', methods=['POST'])
+@login_required
 def add_driver():
     try:
+        # Only admins can add drivers via API
+        if not current_user.is_admin:
+            return jsonify({"error": _('admin_access_required')}), 403
+            
         data = request.get_json()
         logging.debug(f"Received data: {data}")
         
@@ -197,12 +217,70 @@ def add_driver():
         db.session.commit()
         
         return jsonify({
-            "message": "Driver added successfully", 
+            "message": _('driver_added'), 
             "id": new_driver.id,
             "driver_code": new_driver.driver_code
         }), 201
     
     except Exception as e:
         logging.error(f"Error adding driver: {e}")
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/drivers/<int:driver_id>', methods=['PUT'])
+@login_required
+def update_driver(driver_id):
+    try:
+        # Only admins can update drivers
+        if not current_user.is_admin:
+            return jsonify({"error": _('admin_access_required')}), 403
+            
+        data = request.get_json()
+        driver = Driver.query.get_or_404(driver_id)
+        
+        # Update driver fields
+        if 'name' in data:
+            driver.name = data['name']
+        if 'age' in data:
+            driver.age = data['age']
+        if 'gender' in data:
+            driver.gender = data['gender']
+        if 'phone' in data:
+            driver.phone = data['phone']
+        if 'whatsapp' in data:
+            driver.whatsapp = data['whatsapp']
+        if 'available' in data:
+            driver.available = data['available']
+            
+        db.session.commit()
+        
+        return jsonify({
+            "message": _('driver_updated'),
+            "id": driver.id
+        })
+    
+    except Exception as e:
+        logging.error(f"Error updating driver {driver_id}: {e}")
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/drivers/<int:driver_id>', methods=['DELETE'])
+@login_required
+def delete_driver(driver_id):
+    try:
+        # Only admins can delete drivers
+        if not current_user.is_admin:
+            return jsonify({"error": _('admin_access_required')}), 403
+            
+        driver = Driver.query.get_or_404(driver_id)
+        db.session.delete(driver)
+        db.session.commit()
+        
+        return jsonify({
+            "message": _('driver_deleted')
+        })
+    
+    except Exception as e:
+        logging.error(f"Error deleting driver {driver_id}: {e}")
         db.session.rollback()
         return jsonify({"error": str(e)}), 500

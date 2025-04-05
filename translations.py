@@ -76,6 +76,10 @@ translations = {
         'driver_added': 'Driver added successfully',
         'driver_updated': 'Driver updated successfully',
         'driver_deleted': 'Driver deleted successfully',
+        'login_successful': 'Login successful!',
+        'logout_successful': 'Logout successful!',
+        'invalid_credentials': 'Invalid username or password',
+        'admin_access_required': 'You need to be an admin to access this page.',
     },
     
     'ru': {
@@ -151,6 +155,10 @@ translations = {
         'driver_added': 'Водитель успешно добавлен',
         'driver_updated': 'Водитель успешно обновлен',
         'driver_deleted': 'Водитель успешно удален',
+        'login_successful': 'Вход выполнен успешно!',
+        'logout_successful': 'Выход выполнен успешно!',
+        'invalid_credentials': 'Неверное имя пользователя или пароль',
+        'admin_access_required': 'Для доступа к этой странице необходимо быть администратором.',
     },
     
     'kk': {
@@ -226,6 +234,10 @@ translations = {
         'driver_added': 'Жүргізуші сәтті қосылды',
         'driver_updated': 'Жүргізуші сәтті жаңартылды',
         'driver_deleted': 'Жүргізуші сәтті жойылды',
+        'login_successful': 'Кіру сәтті болды!',
+        'logout_successful': 'Шығу сәтті болды!',
+        'invalid_credentials': 'Қате пайдаланушы аты немесе құпия сөз',
+        'admin_access_required': 'Бұл бетке кіру үшін әкімші болу керек.',
     },
     
     'zh': {
@@ -301,5 +313,9 @@ translations = {
         'driver_added': '司机添加成功',
         'driver_updated': '司机更新成功',
         'driver_deleted': '司机删除成功',
+        'login_successful': '登录成功！',
+        'logout_successful': '退出成功！',
+        'invalid_credentials': '用户名或密码错误',
+        'admin_access_required': '需要管理员权限才能访问此页面。',
     }
 }

@@ -38,7 +38,7 @@
             </div>
         </div>
     </nav>
-
+    
     <!-- Language Selector -->
     <div class="container mt-2">
         <div class="d-flex justify-content-end">
@@ -58,8 +58,8 @@
 
     <!-- Main Content -->
     <div class="container main-container">
-        <div class="row">
-            <div class="col-md-6 mx-auto">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
                         <h2 class="text-center">{{ _('login') }}</h2>
@@ -67,14 +67,14 @@
                     <div class="card-body">
                         {% with messages = get_flashed_messages() %}
                         {% if messages %}
-                        <div class="alert alert-danger">
+                        <div class="alert alert-info">
                             {% for message in messages %}
                             {{ message }}
                             {% endfor %}
                         </div>
                         {% endif %}
                         {% endwith %}
-
+                        
                         <form method="POST" action="{{ url_for('login') }}">
                             <div class="mb-3">
                                 <label for="username" class="form-label">{{ _('username') }}</label>
@@ -83,10 +83,6 @@
                             <div class="mb-3">
                                 <label for="password" class="form-label">{{ _('password') }}</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
-                            </div>
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
-                                <label class="form-check-label" for="remember_me">Remember Me</label>
                             </div>
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary">{{ _('login') }}</button>

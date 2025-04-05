@@ -264,6 +264,15 @@
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     
     <script>
+        // Translations for JavaScript alerts
+        const translations = {
+            driver_added: "{{ _('driver_added') }}",
+            driver_updated: "{{ _('driver_updated') }}",
+            driver_deleted: "{{ _('driver_deleted') }}",
+            fill_required: "{{ _('provide_full_name') }}",
+            error_occurred: "{{ _('error_occurred') }}"
+        };
+        
         // Admin panel JavaScript for driver management
         document.addEventListener('DOMContentLoaded', function() {
             // Add driver
@@ -297,7 +306,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.message) {
-                        alert('Driver added successfully');
+                        alert('{{ _('driver_added') }}');
                         location.reload();
                     } else {
                         alert('Error: ' + data.error);

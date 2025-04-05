@@ -46,12 +46,23 @@ function translateGender(gender) {
     };
     
     // Get current locale from html tag or default to ru
-    const locale = document.documentElement.lang || 'ru';
+    const htmlTag = document.querySelector('html');
+    let locale = 'ru'; // Default to Russian
+    
+    if (htmlTag && htmlTag.getAttribute('lang')) {
+        locale = htmlTag.getAttribute('lang');
+        console.log("Detected locale from HTML tag:", locale);
+    } else {
+        console.log("Could not detect locale from HTML tag, using default:", locale);
+    }
     
     // Return translated gender if available, otherwise return the original
-    return translations[gender] && translations[gender][locale] 
+    const translatedGender = translations[gender] && translations[gender][locale] 
         ? translations[gender][locale] 
         : gender;
+        
+    console.log(`Translating gender '${gender}' to '${translatedGender}' using locale '${locale}'`);
+    return translatedGender;
 }
 
 // Driver Form Functionality

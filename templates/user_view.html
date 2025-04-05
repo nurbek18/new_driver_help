@@ -80,11 +80,30 @@
         </div>
     </div>
 </template>
+
+<!-- Hidden elements to store gender translations for JavaScript -->
+<div class="d-none">
+    <span id="male-translation">{{ _('male') }}</span>
+    <span id="female-translation">{{ _('female') }}</span>
+    <span id="other-translation">{{ _('other') }}</span>
+</div>
 {% endblock %}
 
 {% block extrajs %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Override translateGender function to use server-side translations
+        window.translateGender = function(gender) {
+            if (gender === 'Male') {
+                return document.getElementById('male-translation').textContent;
+            } else if (gender === 'Female') {
+                return document.getElementById('female-translation').textContent;
+            } else if (gender === 'Other') {
+                return document.getElementById('other-translation').textContent;
+            }
+            return gender;
+        };
+        
         loadDrivers();
         
         document.getElementById('apply-filters').addEventListener('click', function() {

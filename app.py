@@ -2,12 +2,12 @@ import os
 import logging
 import random
 import string
-from flask import Flask, request, jsonify, render_template, flash, redirect, url_for, session
+from flask import Flask, request, jsonify, render_template, flash, redirect, url_for, session, g
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.middleware.proxy_fix import ProxyFix
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
 from translations import translations
 
 # Configure logging
@@ -100,6 +100,9 @@ def before_request():
             session['locale'] = current_user.locale
         else:
             session['locale'] = 'ru'  # Default to Russian
+    
+    # Set the language code in Flask's g object for templates to use
+    g.lang_code = session.get('locale', 'ru')
 
 @app.context_processor
 def utility_processor():

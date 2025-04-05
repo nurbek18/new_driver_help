@@ -22,6 +22,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Function to translate gender
+function translateGender(gender) {
+    const translations = {
+        'Male': {
+            'en': 'Male',
+            'ru': 'Мужской',
+            'kk': 'Ер',
+            'zh': '男'
+        },
+        'Female': {
+            'en': 'Female',
+            'ru': 'Женский',
+            'kk': 'Әйел',
+            'zh': '女'
+        },
+        'Other': {
+            'en': 'Other',
+            'ru': 'Другой',
+            'kk': 'Басқа',
+            'zh': '其他'
+        }
+    };
+    
+    // Get current locale from html tag or default to ru
+    const locale = document.documentElement.lang || 'ru';
+    
+    // Return translated gender if available, otherwise return the original
+    return translations[gender] && translations[gender][locale] 
+        ? translations[gender][locale] 
+        : gender;
+}
+
 // Driver Form Functionality
 function initDriverForm() {
     const form = document.getElementById('driverForm');
@@ -169,7 +201,11 @@ function loadDrivers() {
                 driverCard.querySelector('.driver-name').textContent = driver.name;
                 driverCard.querySelector('.driver-code').textContent = driver.driver_code;
                 driverCard.querySelector('.driver-age').textContent = driver.age;
-                driverCard.querySelector('.driver-gender').textContent = driver.gender;
+                
+                // Translate gender value
+                const genderText = translateGender(driver.gender);
+                driverCard.querySelector('.driver-gender').textContent = genderText;
+                
                 driverCard.querySelector('.driver-phone').textContent = driver.phone;
                 
                 // Set WhatsApp link

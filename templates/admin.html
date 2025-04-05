@@ -63,7 +63,15 @@
                         <td>{{ driver.driver_code }}</td>
                         <td>{{ driver.name }}</td>
                         <td>{{ driver.age }}</td>
-                        <td>{{ driver.gender }}</td>
+                        <td>
+                            {% if driver.gender == 'Male' %}
+                                {{ _('male') }}
+                            {% elif driver.gender == 'Female' %}
+                                {{ _('female') }}
+                            {% else %}
+                                {{ _('other') }}
+                            {% endif %}
+                        </td>
                         <td>{{ driver.phone }}</td>
                         <td>{{ driver.whatsapp }}</td>
                         <td>
@@ -435,13 +443,23 @@
             }
             
             drivers.forEach((driver, index) => {
+                // Translate gender 
+                let genderTranslated = '';
+                if (driver.gender === 'Male') {
+                    genderTranslated = getTranslation('male');
+                } else if (driver.gender === 'Female') {
+                    genderTranslated = getTranslation('female');
+                } else {
+                    genderTranslated = getTranslation('other');
+                }
+                
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
                     <td>${driver.driver_code}</td>
                     <td>${driver.name}</td>
                     <td>${driver.age}</td>
-                    <td>${driver.gender}</td>
+                    <td>${genderTranslated}</td>
                     <td>${driver.phone}</td>
                     <td>${driver.whatsapp}</td>
                     <td>
@@ -499,6 +517,24 @@
                     'ru': 'Водители не найдены',
                     'kk': 'Жүргізушілер табылмады',
                     'zh': '未找到驾驶员'
+                },
+                'male': {
+                    'en': 'Male',
+                    'ru': 'Мужской',
+                    'kk': 'Ер',
+                    'zh': '男'
+                },
+                'female': {
+                    'en': 'Female',
+                    'ru': 'Женский',
+                    'kk': 'Әйел',
+                    'zh': '女'
+                },
+                'other': {
+                    'en': 'Other',
+                    'ru': 'Другой',
+                    'kk': 'Басқа',
+                    'zh': '其他'
                 }
             };
             

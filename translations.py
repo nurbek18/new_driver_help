@@ -15,6 +15,7 @@ translations = {
         'im_driver': 'I\'m a Driver',
         'im_user': 'I\'m a User',
         'footer_copyright': '© 2023 Driver Service Platform. All rights reserved.',
+        'index': '#',
         
         # Features
         'for_drivers': 'For Drivers',
@@ -113,6 +114,7 @@ translations = {
         'im_driver': 'Я водитель',
         'im_user': 'Я пользователь',
         'footer_copyright': '© 2023 Платформа услуг водителей. Все права защищены.',
+        'index': '№',
         
         # Features
         'for_drivers': 'Для водителей',
@@ -468,4 +470,13 @@ translations['kk'].update({
     'invalid_whatsapp': 'Жарамсыз WhatsApp нөмірі',
     'support_whatsapp_number': 'Қолдау WhatsApp нөмірі',
     'whatsapp_number_desc': 'Бұл нөмір басты беттегі "Көмек керек пе?" бөлімінде көрсетіледі.'
+})
+
+# Add index translations for kk and zh languages
+translations['kk'].update({
+    'index': '№'
+})
+
+translations['zh'].update({
+    'index': '序号'
 })

@@ -17,12 +17,8 @@
             <div class="card-body">
                 <form id="filter-form">
                     <div class="mb-3">
-                        <label for="availability-filter" class="form-label">{{ _('availability') }}</label>
-                        <select class="form-select" id="availability-filter">
-                            <option value="all">{{ _('all_drivers') }}</option>
-                            <option value="available">{{ _('available_only') }}</option>
-                            <option value="unavailable">{{ _('unavailable_only') }}</option>
-                        </select>
+                        <label for="search-input" class="form-label">{{ _('search') }}</label>
+                        <input type="text" class="form-control" id="search-input" placeholder="{{ _('search_placeholder') }}">
                     </div>
                     
                     <div class="mb-3">
@@ -69,7 +65,6 @@
         <div class="card h-100 driver-card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="card-title mb-0 driver-name"></h5>
-                <span class="badge driver-status"></span>
             </div>
             <div class="card-body">
                 <p class="mb-1"><strong>{{ _('driver_code') }}:</strong> <span class="driver-code"></span></p>
@@ -95,6 +90,16 @@
         document.getElementById('apply-filters').addEventListener('click', function() {
             filterDrivers();
         });
+        
+        // Add event listener for search input
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {
+            searchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    filterDrivers();
+                }
+            });
+        }
     });
 </script>
 {% endblock %}

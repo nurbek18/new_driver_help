@@ -10,6 +10,27 @@
     </button>
 </div>
 
+<!-- Search Bar -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row g-2">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="admin-search-input" placeholder="{{ _('search_by_name_code_phone') }}">
+                    <button class="btn btn-primary" type="button" id="search-btn">
+                        <i class="fas fa-search"></i> {{ _('search') }}
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-outline-secondary w-100" id="reset-search-btn">
+                    <i class="fas fa-sync-alt me-1"></i> {{ _('reset') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Drivers Table -->
 <div class="card">
     <div class="card-body">
@@ -23,11 +44,10 @@
                         <th>{{ _('gender') }}</th>
                         <th>{{ _('phone_number') }}</th>
                         <th>{{ _('whatsapp_number') }}</th>
-                        <th>{{ _('availability') }}</th>
                         <th>{{ _('actions') }}</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="drivers-table-body">
                     {% for driver in drivers %}
                     <tr>
                         <td>{{ driver.driver_code }}</td>
@@ -37,20 +57,12 @@
                         <td>{{ driver.phone }}</td>
                         <td>{{ driver.whatsapp }}</td>
                         <td>
-                            {% if driver.available %}
-                            <span class="badge bg-success">{{ _('available') }}</span>
-                            {% else %}
-                            <span class="badge bg-secondary">{{ _('unavailable') }}</span>
-                            {% endif %}
-                        </td>
-                        <td>
                             <button class="btn btn-sm btn-primary edit-driver" data-driver-id="{{ driver.id }}"
                                 data-driver-name="{{ driver.name }}"
                                 data-driver-age="{{ driver.age }}"
                                 data-driver-gender="{{ driver.gender }}"
                                 data-driver-phone="{{ driver.phone }}"
-                                data-driver-whatsapp="{{ driver.whatsapp }}"
-                                data-driver-available="{{ driver.available | lower }}">
+                                data-driver-whatsapp="{{ driver.whatsapp }}">
                                 <i class="fas fa-edit"></i>
                             </button>
                             <button class="btn btn-sm btn-danger delete-driver" data-driver-id="{{ driver.id }}">
@@ -121,11 +133,6 @@
                             {{ _('provide_whatsapp') }}
                         </div>
                     </div>
-                    
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="add-available" name="available" checked>
-                        <label class="form-check-label" for="add-available">{{ _('currently_available') }}</label>
-                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -194,11 +201,6 @@
                             {{ _('provide_whatsapp') }}
                         </div>
                     </div>
-                    
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="edit-available" name="available">
-                        <label class="form-check-label" for="edit-available">{{ _('currently_available') }}</label>
-                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -242,8 +244,7 @@
                     age: parseInt(document.getElementById('add-age').value),
                     gender: document.getElementById('add-gender').value,
                     phone: document.getElementById('add-phone').value,
-                    whatsapp: document.getElementById('add-whatsapp').value,
-                    available: document.getElementById('add-available').checked
+                    whatsapp: document.getElementById('add-whatsapp').value
                 };
                 
                 fetch('/api/drivers', {
@@ -288,7 +289,6 @@
                 document.getElementById('edit-gender').value = this.getAttribute('data-driver-gender');
                 document.getElementById('edit-phone').value = this.getAttribute('data-driver-phone');
                 document.getElementById('edit-whatsapp').value = this.getAttribute('data-driver-whatsapp');
-                document.getElementById('edit-available').checked = this.getAttribute('data-driver-available') === 'true';
                 
                 // Show the edit modal
                 new bootstrap.Modal(document.getElementById('editDriverModal')).show();
@@ -305,8 +305,7 @@
                     age: parseInt(document.getElementById('edit-age').value),
                     gender: document.getElementById('edit-gender').value,
                     phone: document.getElementById('edit-phone').value,
-                    whatsapp: document.getElementById('edit-whatsapp').value,
-                    available: document.getElementById('edit-available').checked
+                    whatsapp: document.getElementById('edit-whatsapp').value
                 };
                 
                 fetch(`/api/drivers/${driverId}`, {
@@ -380,28 +379,137 @@
                 console.error('Error:', error);
             });
         });
+        
+        // Search functionality
+        document.getElementById('search-btn').addEventListener('click', function() {
+            const searchQuery = document.getElementById('admin-search-input').value.trim();
+            if (searchQuery) {
+                // Call search API
+                fetch(`/api/drivers?search=${encodeURIComponent(searchQuery)}`)
+                .then(response => response.json())
+                .then(drivers => {
+                    updateDriversTable(drivers);
+                })
+                .catch(error => {
+                    console.error('Search error:', error);
+                    showAlert('danger', 'Error searching for drivers');
+                });
+            }
+        });
+        
+        // Reset search button
+        document.getElementById('reset-search-btn').addEventListener('click', function() {
+            document.getElementById('admin-search-input').value = '';
+            fetch('/api/drivers')
+            .then(response => response.json())
+            .then(drivers => {
+                updateDriversTable(drivers);
+            })
+            .catch(error => {
+                console.error('Error resetting search:', error);
+            });
+        });
+        
+        // Add enter key event for search input
+        document.getElementById('admin-search-input').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                document.getElementById('search-btn').click();
+            }
+        });
+        
+        // Function to update the drivers table with search results
+        function updateDriversTable(drivers) {
+            const tableBody = document.getElementById('drivers-table-body');
+            tableBody.innerHTML = '';
+            
+            if (drivers.length === 0) {
+                // No drivers found
+                const row = document.createElement('tr');
+                row.innerHTML = `<td colspan="7" class="text-center">{{ _('no_drivers_found') }}</td>`;
+                tableBody.appendChild(row);
+            } else {
+                // Create table rows for each driver
+                drivers.forEach(driver => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${driver.driver_code}</td>
+                        <td>${driver.name}</td>
+                        <td>${driver.age}</td>
+                        <td>${driver.gender}</td>
+                        <td>${driver.phone}</td>
+                        <td>${driver.whatsapp}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary edit-driver" 
+                                data-driver-id="${driver.id}"
+                                data-driver-name="${driver.name}"
+                                data-driver-age="${driver.age}"
+                                data-driver-gender="${driver.gender}"
+                                data-driver-phone="${driver.phone}"
+                                data-driver-whatsapp="${driver.whatsapp}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-driver" data-driver-id="${driver.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+                
+                // Re-attach event listeners to the new buttons
+                attachEventListeners();
+            }
+        }
+        
+        // Function to attach event listeners to dynamically created buttons
+        function attachEventListeners() {
+            // Edit buttons
+            document.querySelectorAll('.edit-driver').forEach(button => {
+                button.addEventListener('click', function() {
+                    const driverId = this.getAttribute('data-driver-id');
+                    document.getElementById('edit-driver-id').value = driverId;
+                    document.getElementById('edit-name').value = this.getAttribute('data-driver-name');
+                    document.getElementById('edit-age').value = this.getAttribute('data-driver-age');
+                    document.getElementById('edit-gender').value = this.getAttribute('data-driver-gender');
+                    document.getElementById('edit-phone').value = this.getAttribute('data-driver-phone');
+                    document.getElementById('edit-whatsapp').value = this.getAttribute('data-driver-whatsapp');
+                    
+                    // Show the edit modal
+                    new bootstrap.Modal(document.getElementById('editDriverModal')).show();
+                });
+            });
+            
+            // Delete buttons
+            document.querySelectorAll('.delete-driver').forEach(button => {
+                button.addEventListener('click', function() {
+                    const driverId = this.getAttribute('data-driver-id');
+                    document.getElementById('delete-driver-id').value = driverId;
+                    
+                    // Show the delete confirmation modal
+                    new bootstrap.Modal(document.getElementById('deleteDriverModal')).show();
+                });
+            });
+        }
     });
     
-    // Show alert function
+    // Helper function to show alerts
     function showAlert(type, message) {
         const alertDiv = document.createElement('div');
-        alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
-        alertDiv.role = 'alert';
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3`;
+        alertDiv.style.zIndex = "9999";
+        alertDiv.style.maxWidth = "90%";
         alertDiv.innerHTML = `
             ${message}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         `;
+        document.body.appendChild(alertDiv);
         
-        // Insert at the top of the content
-        const content = document.querySelector('.main-container');
-        content.insertBefore(alertDiv, content.firstChild);
-        
-        // Auto dismiss after 5 seconds
+        // Automatically dismiss after 5 seconds
         setTimeout(() => {
             alertDiv.classList.remove('show');
             setTimeout(() => {
-                alertDiv.remove();
-            }, 150);
+                document.body.removeChild(alertDiv);
+            }, 500);
         }, 5000);
     }
 </script>

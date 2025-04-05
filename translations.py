@@ -47,17 +47,16 @@ translations = {
         # User View
         'available_drivers': 'Available Drivers',
         'filter_drivers': 'Filter Drivers',
-        'availability': 'Availability',
         'all_drivers': 'All Drivers',
-        'available_only': 'Available Only',
-        'unavailable_only': 'Unavailable Only',
         'all_genders': 'All Genders',
         'loading_drivers': 'Loading drivers...',
         'no_drivers_found': 'No Drivers Found',
         'no_drivers_matching': 'There are no drivers matching your criteria.',
         'contact_whatsapp': 'Contact via WhatsApp',
-        'available': 'Available',
-        'unavailable': 'Unavailable',
+        'search': 'Search',
+        'search_placeholder': 'Search by name, code or phone',
+        'search_by_name_code_phone': 'Search by name, code or phone number',
+        'reset': 'Reset',
         
         # Admin
         'admin_panel': 'Admin Panel',
@@ -127,17 +126,16 @@ translations = {
         # User View
         'available_drivers': 'Доступные водители',
         'filter_drivers': 'Фильтр водителей',
-        'availability': 'Доступность',
         'all_drivers': 'Все водители',
-        'available_only': 'Только доступные',
-        'unavailable_only': 'Только недоступные',
         'all_genders': 'Все пола',
         'loading_drivers': 'Загрузка водителей...',
         'no_drivers_found': 'Водители не найдены',
         'no_drivers_matching': 'Нет водителей, соответствующих вашим критериям.',
         'contact_whatsapp': 'Связаться через WhatsApp',
-        'available': 'Доступен',
-        'unavailable': 'Недоступен',
+        'search': 'Поиск',
+        'search_placeholder': 'Поиск по имени, коду или телефону',
+        'search_by_name_code_phone': 'Поиск по имени, коду или номеру телефона',
+        'reset': 'Сбросить',
         
         # Admin
         'admin_panel': 'Панель администратора',

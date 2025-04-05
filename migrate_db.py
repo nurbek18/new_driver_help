@@ -45,6 +45,15 @@ def migrate_database():
                     logger.info("Added driver_code column to driver table")
                 else:
                     logger.info("driver_code column already exists in driver table, skipping")
+                
+                # Check if available column exists and remove it
+                if 'available' in driver_columns:
+                    # Remove available column as it's no longer needed
+                    conn.execute(text("ALTER TABLE driver DROP COLUMN available"))
+                    conn.commit()
+                    logger.info("Removed available column from driver table")
+                else:
+                    logger.info("available column doesn't exist in driver table, skipping")
             else:
                 logger.info("Driver table doesn't exist yet, will be created by the application")
         

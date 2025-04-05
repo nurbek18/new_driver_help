@@ -20,7 +20,6 @@ class Driver(db.Model):
     gender = db.Column(db.String(10), nullable=False)
     phone = db.Column(db.String(20), nullable=False)
     whatsapp = db.Column(db.String(20), nullable=False)
-    available = db.Column(db.Boolean, default=True)
     
     def __repr__(self):
         return f'<Driver {self.name}>'

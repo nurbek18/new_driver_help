@@ -85,7 +85,7 @@ def _(text):
 @app.before_request
 def before_request():
     if 'locale' not in session:
-        session['locale'] = 'en'  # Default to English
+        session['locale'] = 'ru'  # Default to Russian
     
     # If user is logged in, use their preferred locale
     if current_user.is_authenticated and current_user.locale:
@@ -94,7 +94,7 @@ def before_request():
 
 @app.context_processor
 def utility_processor():
-    return {'_': _, 'current_locale': session.get('locale', 'en')}
+    return {'_': _, 'current_locale': session.get('locale', 'ru')}
 
 # Routes for language switching
 @app.route('/set_language/<language>')
@@ -166,19 +166,26 @@ def admin_dashboard():
 @app.route('/api/drivers', methods=['GET'])
 def get_drivers():
     try:
-        # Filter by availability if specified
-        availability = request.args.get('availability')
+        # Get filters from query parameters
         gender = request.args.get('gender')
+        search_query = request.args.get('search')
         
         query = Driver.query
         
-        if availability == 'available':
-            query = query.filter_by(available=True)
-        elif availability == 'unavailable':
-            query = query.filter_by(available=False)
-            
+        # Apply gender filter if provided
         if gender and gender != 'all':
             query = query.filter_by(gender=gender)
+            
+        # Apply search filter if provided (search by name, code, or phone)
+        if search_query:
+            search_pattern = f"%{search_query}%"
+            query = query.filter(
+                db.or_(
+                    Driver.name.ilike(search_pattern),
+                    Driver.driver_code.ilike(search_pattern),
+                    Driver.phone.ilike(search_pattern)
+                )
+            )
             
         drivers = query.all()
         
@@ -189,8 +196,7 @@ def get_drivers():
             'age': driver.age,
             'gender': driver.gender,
             'phone': driver.phone,
-            'whatsapp': driver.whatsapp,
-            'available': driver.available
+            'whatsapp': driver.whatsapp
         } for driver in drivers])
     except Exception as e:
         logging.error(f"Error getting drivers: {e}")
@@ -220,8 +226,7 @@ def add_driver():
             age=data['age'],
             gender=data['gender'],
             phone=data['phone'],
-            whatsapp=data['whatsapp'],
-            available=data.get('available', True)
+            whatsapp=data['whatsapp']
         )
         
         db.session.add(new_driver)
@@ -260,8 +265,6 @@ def update_driver(driver_id):
             driver.phone = data['phone']
         if 'whatsapp' in data:
             driver.whatsapp = data['whatsapp']
-        if 'available' in data:
-            driver.available = data['available']
             
         db.session.commit()
         

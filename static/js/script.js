@@ -202,9 +202,13 @@ function loadDrivers() {
                 driverCard.querySelector('.driver-code').textContent = driver.driver_code;
                 driverCard.querySelector('.driver-age').textContent = driver.age;
                 
-                // Translate gender value
-                const genderText = translateGender(driver.gender);
-                driverCard.querySelector('.driver-gender').textContent = genderText;
+                // Translate gender value based on current locale
+                const genderElement = driverCard.querySelector('.driver-gender');
+                if (genderElement) {
+                    let translatedGender = translateGender(driver.gender);
+                    genderElement.textContent = translatedGender;
+                    console.log(`Translated gender ${driver.gender} to ${translatedGender}`);
+                }
                 
                 driverCard.querySelector('.driver-phone').textContent = driver.phone;
                 

@@ -36,7 +36,6 @@ psutil==6.0.0
 pure_eval==0.2.3
 Pygments==2.18.0
 python-dateutil==2.9.0.post0
-pywin32==306
 pyzmq==26.0.3
 requests==2.32.3
 setuptools==75.8.0

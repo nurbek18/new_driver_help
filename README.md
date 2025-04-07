@@ -1,3 +1,5 @@
+## this project is running on render's free plan , so when you first come inside this site it just will take a bit of your time , but dont worry about that , all is work,just because the limit of free plan
+
 # 🚗 New Driver Help — Driver Service Platform
 
 A full-stack web application to support and manage driver services across Kazakhstan. The platform allows users to find drivers based on specific filters (e.g., region, experience, car type) and provides an admin panel for managing all data.

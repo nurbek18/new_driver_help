@@ -26,6 +26,20 @@ body {
     transition: transform 0.2s;
 }
 
+/* 左边按钮样式 */
+.btn-primary.role-btn {
+    background-color: #2161e1;
+    border-color: #1973cc;
+}
+
+/* 右边按钮样式 */
+.btn-secondary.role-btn {
+    background-color: #2161e1;
+    border-color: #0f75cf;
+}
+
+
+
 .role-btn:hover {
     transform: scale(1.05);
 }

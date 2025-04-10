@@ -9,6 +9,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
 from translations import translations
+from flask import send_from_directory
+
+
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -439,3 +442,5 @@ def delete_driver(driver_id):
         logging.error(f"Error deleting driver {driver_id}: {e}")
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+    
+

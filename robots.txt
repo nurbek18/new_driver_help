@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://drivesafenow.onrender.com/sitemap.xml

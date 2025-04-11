@@ -1,0 +1,14 @@
+name: Keep Render Site Alive
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping-render-site:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send request to Render site
+        run: curl -s https://drivesafenow.onrender.com/

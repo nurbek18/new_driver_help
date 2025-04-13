@@ -112,3 +112,54 @@ footer {
         margin: 0.5rem;
     }
 }
+
+
+/* Floating Contact Buttons 一键电话和whatsapp联系 */
+.floating-contact {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contact-btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    font-size: 1.5em;
+}
+
+.contact-btn:hover {
+    transform: scale(1.1);
+    color: white;
+}
+
+.whatsapp-btn {
+    background-color: #25D366;
+}
+
+.phone-btn {
+    background-color: #007bff;
+}
+
+@media (max-width: 768px) {
+    .floating-contact {
+        right: 10px;
+    }
+    
+    .contact-btn {
+        width: 40px;
+        height: 40px;
+    }
+}

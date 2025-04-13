@@ -5,13 +5,13 @@ Translations for the Driver Service Platform
 translations = {
     'en': {
         # General
-        'driver_service_platform': 'Driver Service Platform',
+        'driver_service_platform': 'Sober driver in Almaty',
         'home': 'Home',
         'driver_registration': 'Driver Registration',
         'find_drivers': 'Find Drivers',
-        'welcome': 'Welcome to Driver Service Platform',
+        'welcome': 'Welcome to Sober driver in Almaty',
         'connect_drivers_passengers': 'Looking for a driver to take you and your car to your destination?',
-        'choose_role': 'Choose your role to get started:',
+        'choose_role': 'Choose your role, or just click the button on the right to get in touch fast:',
         'im_driver': 'Become a Driver',
         'im_user': 'Need a Driver',
         'footer_copyright': '© 2023 Driver Service Platform. All rights reserved.',
@@ -104,13 +104,13 @@ translations = {
     
     'ru': {
         # General
-        'driver_service_platform': 'Платформа услуг водителей',
+        'driver_service_platform': 'Трезвый водитель Алматы',
         'home': 'Главная',
         'driver_registration': 'Регистрация водителя',
         'find_drivers': 'Найти водителей',
-        'welcome': 'Добро пожаловать на платформу услуг водителей',
+        'welcome': 'Добро пожаловать на трезвый водитель Алматы',
         'connect_drivers_passengers': 'Ищете водителя, чтобы довезти вас и вашу машину до места назначения?',
-        'choose_role': 'Выберите вашу роль, чтобы начать:',
+        'choose_role': 'Выберите свою роль или нажмите кнопку справа для мгновенной связи с нами.:',
         'im_driver': 'Стать водителем',
         'im_user': 'Нужен водитель',
         'footer_copyright': '© 2023 Платформа услуг водителей. Все права защищены.',
@@ -208,13 +208,13 @@ translations = {
     
     'kk': {
         # General
-        'driver_service_platform': 'Жүргізуші қызметтері платформасы',
+        'driver_service_platform': 'Алматыдағы сау жүргізуші',
         'home': 'Басты бет',
         'driver_registration': 'Жүргізуші тіркеу',
         'find_drivers': 'Жүргізушілерді табу',
-        'welcome': 'Жүргізуші қызметтері платформасына қош келдіңіз',
+        'welcome': 'Алматыдағы сау жүргізуші платформасына қош келдіңіз',
         'connect_drivers_passengers': 'Сізді және көлігіңізді межелі жеріңізге жеткізетін жүргізушіні іздеп жүрсіз бе?',
-        'choose_role': 'Бастау үшін рөліңізді таңдаңыз:',
+        'choose_role': 'Рөліңізді таңдаңыз, немесе бізбен қазір байланысу үшін оң жақтағы батырманы қазір басыңыз:',
         'im_driver': 'Жүргізуші болу',
         'im_user': 'Жүргізуші қажет',
         'footer_copyright': '© 2023 Жүргізуші қызметтері платформасы. Барлық құқықтар қорғалған.',
@@ -296,13 +296,13 @@ translations = {
     
     'zh': {
         # General
-        'driver_service_platform': '代驾服务平台',
+        'driver_service_platform': '阿拉木图代驾司机',
         'home': '首页',
         'driver_registration': '代驾注册',
         'find_drivers': '寻找代驾',
-        'welcome': '欢迎来到代驾服务平台',
+        'welcome': '欢迎来到阿拉木图代驾司机',
         'connect_drivers_passengers': '需要代驾带你和你的车到目的地吗？',
-        'choose_role': '选择您的角色以开始：',
+        'choose_role': '选择你的角色，或点击右侧按钮一键联系我们：',
         'im_driver': '成为代驾',
         'im_user': '需要代驾',
         'footer_copyright': '© 2025 代驾服务平台。保留所有权利。',

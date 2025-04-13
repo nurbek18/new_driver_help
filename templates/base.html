@@ -128,6 +128,20 @@
         
         {% block content %}{% endblock %}
     </div>
+<!-- Floating Contact Buttons, only show on the homepage -->
+{% if request.path == '/' %}
+<div class="floating-contact">
+    <a href="tel:+77082836678" class="contact-btn phone-btn" title="Позвонить нам">
+        <i class="fas fa-phone"></i>
+    </a>
+    <a href="https://wa.me/77082836678?text=Здравствуйте!%20Я%20хочу%20заказать%20услугу%20трезвого%20водителя." 
+       target="_blank" 
+       class="contact-btn whatsapp-btn" 
+       title="Связаться через WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+</div>
+{% endif %}
 
     {% block footer %}{% endblock %}
 

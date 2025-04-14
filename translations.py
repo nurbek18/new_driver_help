@@ -14,7 +14,7 @@ translations = {
         'choose_role': 'Choose your role, or just click the button on the right to get in touch fast:',
         'im_driver': 'Become a Driver',
         'im_user': 'Need a Driver',
-        'footer_copyright': '© 2023 Driver Service Platform. All rights reserved.',
+        'footer_copyright': '© 2025 Driver Service Platform. All rights reserved.',
         'index': '#',
         
         # Features
@@ -113,7 +113,7 @@ translations = {
         'choose_role': 'Выберите свою роль или нажмите кнопку справа для мгновенной связи с нами.:',
         'im_driver': 'Стать водителем',
         'im_user': 'Нужен водитель',
-        'footer_copyright': '© 2023 Платформа услуг водителей. Все права защищены.',
+        'footer_copyright': '© 2025 Платформа услуг водителей. Все права защищены.',
         'index': '№',
         
         # Features
@@ -217,7 +217,7 @@ translations = {
         'choose_role': 'Рөліңізді таңдаңыз, немесе бізбен қазір байланысу үшін оң жақтағы батырманы қазір басыңыз:',
         'im_driver': 'Жүргізуші болу',
         'im_user': 'Жүргізуші қажет',
-        'footer_copyright': '© 2023 Жүргізуші қызметтері платформасы. Барлық құқықтар қорғалған.',
+        'footer_copyright': '© 2025 Жүргізуші қызметтері платформасы. Барлық құқықтар қорғалған.',
         
         # Features
         'for_drivers': 'Жүргізушілерге',
